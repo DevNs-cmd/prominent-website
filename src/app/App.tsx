@@ -541,12 +541,12 @@ function SectionHead({ eyebrow, title, sub }: { eyebrow: string; title: React.Re
     >
       <div className="flex items-center gap-3 mb-3">
         <div className="h-[1px] w-8 bg-[#85bde2]" />
-        <span className="text-[10px] tracking-[0.3em] text-[#85bde2] uppercase font-semibold">{eyebrow}</span>
+        <span className="text-[10px] tracking-[0.3em] text-[#85bde2] uppercase font-bold">{eyebrow}</span>
       </div>
-      <h2 className="text-[clamp(32px,5vw,52px)] font-black text-white leading-[1.05] tracking-[-0.02em] mb-4">
+      <h2 className="text-[clamp(32px,5vw,52px)] font-black leading-[1.05] tracking-[-0.02em] mb-4 bg-gradient-to-r from-white via-[#d4e6f4] to-[#85bde2] bg-clip-text text-transparent uppercase">
         {title}
       </h2>
-      {sub && <p className="text-[#A1A1AA] text-base max-w-xl leading-relaxed">{sub}</p>}
+      {sub && <p className="text-[#A1A1AA] text-base max-w-xl leading-relaxed font-light">{sub}</p>}
     </motion.div>
   );
 }
@@ -554,32 +554,38 @@ function SectionHead({ eyebrow, title, sub }: { eyebrow: string; title: React.Re
 // ─── About ────────────────────────────────────────────────────────────────────
 function About() {
   return (
-    <section id="about" className="bg-[#050505] py-28 lg:py-36">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-16 items-center">
+    <section id="about" className="relative bg-[#050505] py-28 lg:py-36 overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-[20%] right-[-10%] w-[45vw] h-[45vw] bg-[#85bde2] rounded-full filter blur-[150px] opacity-[0.03] pointer-events-none" />
+      <div className="absolute bottom-[10%] left-[-10%] w-[35vw] h-[35vw] bg-[#2D4A77] rounded-full filter blur-[130px] opacity-[0.02] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-16 items-center">
         <div>
           <SectionHead
             eyebrow="About PROMINENT"
             title={<>The Institution<br />Behind the Brand</>}
             sub="PROMINENT is not a student club. It is a professional development institution operating within academia — with the rigour, output, and standards of the industry it trains for."
           />
-          <div className="grid grid-cols-2 gap-px bg-white/[0.06] mt-10">
+          <div className="grid grid-cols-2 gap-4 mt-10">
             {[
               { icon: Award, t: "Nationally Recognised", d: "Competed and won at premier B-school platforms" },
               { icon: Users, t: "84 Active Members", d: "Selective intake. High-performance culture." },
               { icon: TrendingUp, t: "₹2L+ Sponsorships", d: "Commercially self-sustaining since Year 2" },
               { icon: Calendar, t: "Est. 2021", d: "Five years of institution building" },
             ].map(({ icon: Icon, t, d }) => (
-              <div key={t} className="bg-[#050505] p-6 group hover:bg-[#0D0D0D] transition-colors">
-                <Icon size={17} className="text-[#85bde2] mb-4" />
-                <p className="text-sm font-semibold text-white mb-1">{t}</p>
-                <p className="text-xs text-[#717182] leading-relaxed">{d}</p>
+              <div key={t} className="bg-[#0D0D0D]/50 border border-white/[0.05] rounded-sm p-6 group hover:border-[#85bde2]/20 hover:bg-[#0D0D0D] transition-all duration-300 hover:shadow-[0_10px_25px_rgba(133,189,226,0.03)]">
+                <div className="p-2.5 bg-[#85bde2]/5 rounded-sm w-fit group-hover:bg-[#85bde2]/10 transition-all duration-300 mb-4">
+                  <Icon size={17} className="text-[#85bde2]" />
+                </div>
+                <p className="text-sm font-bold text-white mb-1">{t}</p>
+                <p className="text-xs text-[#717182] leading-relaxed font-light">{d}</p>
               </div>
             ))}
           </div>
         </div>
 
         <div className="relative hidden lg:block">
-          <div className="aspect-[3/4] max-w-sm ml-auto overflow-hidden ring-1 ring-white/10 rounded-sm">
+          <div className="aspect-[3/4] max-w-sm ml-auto overflow-hidden ring-1 ring-white/10 rounded-sm shadow-[0_20px_50px_rgba(0,0,0,0.7)]">
             <img
               src={image2}
               alt="Dev N Suman - President"
@@ -587,10 +593,10 @@ function About() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/80 via-transparent to-transparent" />
           </div>
-          <div className="absolute -bottom-5 -left-5 border border-white/[0.08] bg-[#0D0D0D] p-5 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
-            <p className="text-xs text-[#A1A1AA] tracking-widest uppercase mb-1">Current Leadership</p>
-            <p className="text-base font-bold text-white">Dev N Suman</p>
-            <p className="text-xs text-[#85bde2]">President, AY 2026–27</p>
+          <div className="absolute -bottom-5 -left-5 border border-white/[0.08] bg-[#0D0D0D]/95 backdrop-blur-md p-6 rounded-sm shadow-[0_15px_35px_rgba(0,0,0,0.6)] hover:border-[#85bde2]/30 transition-all duration-300 max-w-[240px]">
+            <p className="text-[9px] text-[#A1A1AA] tracking-[0.25em] uppercase mb-1.5 font-bold">Current Leadership</p>
+            <p className="text-base font-black text-white tracking-tight uppercase">Dev N Suman</p>
+            <p className="text-xs text-[#85bde2] font-semibold mt-0.5">President, AY 2026–27</p>
           </div>
         </div>
       </div>
@@ -603,8 +609,11 @@ function Events() {
   const [active, setActive] = useState(0);
 
   return (
-    <section id="events" className="bg-[#080808] py-28 lg:py-36 border-t border-white/[0.06]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <section id="events" className="relative bg-gradient-to-b from-[#050505] to-[#0A0A0A] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute bottom-[10%] right-[-10%] w-[35vw] h-[35vw] bg-[#85bde2]/5 rounded-full filter blur-[120px] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <SectionHead
           eyebrow="Events"
           title={<>Our Defining<br />Moments</>}
@@ -613,54 +622,60 @@ function Events() {
 
         <div className="grid lg:grid-cols-[1fr_340px] gap-6">
           {/* Main featured */}
-          <div className="relative overflow-hidden group cursor-pointer" onClick={() => setActive((active + 1) % EVENT_SLIDES.length)}>
+          <div className="relative overflow-hidden group cursor-pointer rounded-sm border border-white/[0.08] bg-[#0D0D0D] shadow-[0_20px_45px_rgba(0,0,0,0.65)]" onClick={() => setActive((active + 1) % EVENT_SLIDES.length)}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}
-                initial={{ opacity: 0, scale: 1.05 }}
+                initial={{ opacity: 0, scale: 1.03 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.6 }}
-                className="aspect-[16/9] overflow-hidden"
+                transition={{ duration: 0.55 }}
+                className="aspect-[16/9] overflow-hidden relative"
               >
                 <img
                   src={EVENT_SLIDES[active].img}
                   alt={EVENT_SLIDES[active].title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700"
                 />
               </motion.div>
             </AnimatePresence>
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-7">
-              <p className="text-[9px] tracking-[0.3em] text-[#85bde2] uppercase mb-1">{EVENT_SLIDES[active].tag}</p>
-              <h3 className="text-xl font-bold text-white mb-2">{EVENT_SLIDES[active].title}</h3>
-              <p className="text-sm text-[#A1A1AA] leading-relaxed max-w-md">{EVENT_SLIDES[active].desc}</p>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/95 via-[#050505]/30 to-transparent z-[1]" />
+            <div className="absolute bottom-0 left-0 right-0 p-7 z-10">
+              <p className="text-[9px] tracking-[0.3em] text-[#85bde2] uppercase font-bold mb-1">{EVENT_SLIDES[active].tag}</p>
+              <h3 className="text-xl md:text-2xl font-black text-white tracking-wide uppercase mb-2">{EVENT_SLIDES[active].title}</h3>
+              <p className="text-xs md:text-sm text-[#A1A1AA] leading-relaxed max-w-md font-light">{EVENT_SLIDES[active].desc}</p>
             </div>
-            <div className="absolute top-4 right-4 w-9 h-9 bg-black/50 backdrop-blur-sm flex items-center justify-center border border-white/10">
-              <Play size={13} className="text-white ml-0.5" />
+            <div className="absolute top-4 right-4 w-9 h-9 bg-black/70 backdrop-blur-md flex items-center justify-center border border-white/10 rounded-full group-hover:bg-[#85bde2] group-hover:text-black transition-colors z-10">
+              <Play size={12} className="ml-0.5" />
             </div>
           </div>
 
           {/* Side list */}
-          <div className="flex flex-col gap-px bg-white/[0.06]">
+          <div className="flex flex-col gap-2.5">
             {EVENT_SLIDES.map((ev, i) => (
               <button
                 key={i}
                 onClick={() => setActive(i)}
-                className={`flex gap-3 p-4 text-left transition-all ${
-                  i === active ? "bg-[#0D0D0D]" : "bg-[#080808] hover:bg-[#0D0D0D]/60"
+                className={`flex gap-3.5 p-3.5 text-left transition-all rounded-sm border ${
+                  i === active 
+                    ? "bg-[#0D0D0D] border-[#85bde2]/30 shadow-[0_5px_20px_rgba(133,189,226,0.04)]" 
+                    : "bg-[#0D0D0D]/30 border-white/[0.04] hover:bg-[#0D0D0D]/65 hover:border-white/10"
                 }`}
               >
-                <div className="w-14 h-14 overflow-hidden shrink-0">
+                <div className="w-14 h-14 overflow-hidden shrink-0 border border-white/5">
                   <img src={ev.img} alt={ev.title} className="w-full h-full object-cover" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[9px] tracking-widest text-[#85bde2] uppercase mb-0.5">{ev.tag.split("·")[0].trim()}</p>
-                  <p className={`text-sm font-semibold truncate ${i === active ? "text-white" : "text-[#A1A1AA]"}`}>
+                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                  <p className="text-[8px] tracking-widest text-[#85bde2] uppercase font-bold mb-0.5">{ev.tag.split("·")[0].trim()}</p>
+                  <p className={`text-xs font-bold uppercase tracking-wide truncate ${i === active ? "text-white" : "text-[#717182] group-hover:text-[#A1A1AA]"}`}>
                     {ev.title}
                   </p>
                 </div>
-                {i === active && <div className="w-[2px] bg-[#d4e6f4] self-stretch shrink-0" />}
+                {i === active && (
+                  <div className="flex items-center shrink-0">
+                    <div className="w-1 h-6 bg-[#85bde2] rounded-full" />
+                  </div>
+                )}
               </button>
             ))}
           </div>
@@ -693,37 +708,44 @@ function Excellence() {
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="bg-[#050505] py-28 lg:py-36 border-t border-white/[0.06]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12" ref={ref}>
+    <section className="relative bg-gradient-to-b from-[#0A0A0A] via-[#050505] to-[#0A0A0A] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+      {/* Ambient background lighting */}
+      <div className="absolute top-[30%] left-[-15%] w-[45vw] h-[45vw] bg-[#2D4A77]/5 rounded-full filter blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-[20%] right-[-15%] w-[40vw] h-[40vw] bg-[#85bde2]/3 rounded-full filter blur-[130px] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12" ref={ref}>
         <SectionHead eyebrow="Proof of Excellence" title={<>Results That<br />Speak Institutionally.</>} />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.06] mb-10">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {achievements.map((a, i) => (
             <motion.div
               key={a.stat}
-              className="bg-[#050505] p-8 hover:bg-[#0D0D0D] transition-colors"
+              className="bg-[#0D0D0D]/65 border border-white/[0.05] rounded-sm p-8 group hover:border-[#85bde2]/20 hover:bg-[#0D0D0D] transition-all duration-300 hover:shadow-[0_15px_30px_rgba(133,189,226,0.04)]"
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.08, duration: 0.5 }}
             >
-              <p className="text-[52px] font-black text-white tracking-tight leading-none mb-3">{a.stat}</p>
-              <p className="text-xs text-[#A1A1AA] leading-relaxed">{a.desc}</p>
+              <p className="text-[52px] font-black tracking-tight leading-none mb-3 bg-gradient-to-br from-white to-[#85bde2] bg-clip-text text-transparent">{a.stat}</p>
+              <p className="text-xs text-[#A1A1AA] leading-relaxed font-light">{a.desc}</p>
             </motion.div>
           ))}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-5">
+        <div className="grid md:grid-cols-2 gap-6">
           {testimonials.map((t, i) => (
             <motion.div
               key={t.name}
-              className="bg-[#0D0D0D] border border-white/[0.06] p-8 relative overflow-hidden"
+              className="bg-[#0D0D0D]/55 border border-white/[0.06] rounded-sm p-8 relative overflow-hidden group hover:border-[#85bde2]/25 hover:bg-[#0D0D0D]/85 transition-all duration-300 hover:shadow-[0_15px_35px_rgba(133,189,226,0.03)]"
               initial={{ opacity: 0, x: i === 0 ? -20 : 20 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ delay: 0.3 + i * 0.1, duration: 0.6 }}
             >
-              <Quote size={32} className="text-[#85bde2]/30 mb-5" />
+              {/* Subtle top corner decoration */}
+              <div className="absolute -top-12 -right-12 w-24 h-24 bg-[#85bde2]/5 rounded-full filter blur-xl group-hover:bg-[#85bde2]/15 transition-all pointer-events-none" />
+              
+              <Quote size={32} className="text-[#85bde2]/20 group-hover:text-[#85bde2]/30 transition-colors mb-5" />
               <p
-                className="text-base text-[#d4e6f4] leading-relaxed mb-6"
+                className="text-base text-[#d4e6f4] leading-relaxed mb-6 font-light"
                 style={{ fontFamily: "'Playfair Display',serif", fontStyle: "italic" }}
               >
                 &ldquo;{t.quote}&rdquo;
@@ -731,8 +753,8 @@ function Excellence() {
               <div className="flex items-center gap-3">
                 <div className="h-[1px] w-6 bg-[#85bde2]" />
                 <div>
-                  <p className="text-sm font-semibold text-white">{t.name}</p>
-                  <p className="text-xs text-[#717182]">{t.title}</p>
+                  <p className="text-sm font-bold text-white uppercase tracking-wide">{t.name}</p>
+                  <p className="text-xs text-[#717182] font-semibold mt-0.5">{t.title}</p>
                 </div>
               </div>
             </motion.div>
@@ -753,37 +775,46 @@ function Dashboard({ onApply }: { onApply: () => void }) {
   ];
 
   return (
-    <section className="bg-[#0A0A0A] py-28 lg:py-36 border-t border-white/[0.06]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <section className="relative bg-gradient-to-b from-[#0A0A0A] to-[#050505] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-[20%] right-[-10%] w-[35vw] h-[35vw] bg-[#85bde2]/3 rounded-full filter blur-[130px] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex items-end justify-between mb-14 flex-wrap gap-4">
           <SectionHead eyebrow="Operations" title={<>Live Club<br />Dashboard</>} />
-          <div className="flex items-center gap-2 text-[10px] text-[#A1A1AA] tracking-[0.2em] uppercase mb-14">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            Updated 2026–27
+          <div className="flex items-center gap-2 text-[10px] text-[#85bde2] tracking-[0.2em] uppercase mb-14 font-bold">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+            Live · AY 2026–27
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.05] mb-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {metrics.map(({ label, value, delta, icon: Icon, color }) => (
-            <div key={label} className="bg-[#0A0A0A] p-8 group hover:bg-[#0D0D0D] transition-colors">
-              <Icon size={18} className="mb-6" style={{ color }} />
-              <p className="text-5xl font-black text-white tracking-tight mb-2">{value}</p>
-              <p className="text-[10px] text-[#A1A1AA] tracking-[0.2em] uppercase mb-1">{label}</p>
-              <p className="text-[11px] text-[#85bde2]">{delta}</p>
+            <div key={label} className="bg-[#0D0D0D]/55 border border-white/[0.05] rounded-sm p-8 group hover:border-[#85bde2]/20 hover:bg-[#0D0D0D] transition-all duration-300 hover:shadow-[0_15px_35px_rgba(133,189,226,0.05)]">
+              <div className="p-2.5 bg-white/[0.03] rounded-sm w-fit group-hover:bg-[#85bde2]/10 group-hover:text-black transition-all duration-300 mb-6">
+                <Icon size={18} style={{ color }} />
+              </div>
+              <p className="text-5xl font-black text-white tracking-tight mb-2 bg-gradient-to-r from-white to-[#d4e6f4] bg-clip-text text-transparent">{value}</p>
+              <p className="text-[10px] text-[#A1A1AA] tracking-[0.2em] uppercase mb-1.5 font-bold">{label}</p>
+              <p className="text-xs text-[#85bde2] font-semibold">{delta}</p>
             </div>
           ))}
         </div>
 
-        <div className="bg-[#080808] border border-white/[0.06] p-7 flex flex-col md:flex-row items-center gap-8">
-          <div className="flex-1">
-            <p className="text-[10px] text-[#A1A1AA] tracking-[0.2em] uppercase mb-1">Recruitment Status</p>
-            <p className="text-xl font-bold text-white mb-4">Open — AY 2026–27</p>
-            <div className="flex justify-between text-[10px] text-[#A1A1AA] mb-2 max-w-sm">
-              <span>Applications received</span><span>480 / 500</span>
+        <div className="bg-[#0D0D0D]/75 backdrop-blur-sm border border-[#85bde2]/25 p-8 rounded-sm flex flex-col md:flex-row items-center gap-8 shadow-[0_15px_40px_rgba(0,0,0,0.5)]">
+          <div className="flex-1 w-full">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[9px] tracking-[0.25em] text-emerald-400 uppercase font-bold">Recruitment Status</span>
             </div>
-            <div className="h-[2px] bg-white/[0.08] max-w-sm rounded-full overflow-hidden">
+            <p className="text-xl font-black text-white uppercase tracking-wide mb-4">Open — AY 2026–27</p>
+            <div className="flex justify-between text-[11px] text-[#A1A1AA] mb-2.5 max-w-sm">
+              <span className="font-light">Applications received</span>
+              <span className="font-bold text-white">480 / 500</span>
+            </div>
+            <div className="h-2 bg-white/[0.08] max-w-sm rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-[#d4e6f4]"
+                className="h-full bg-gradient-to-r from-[#85bde2] to-[#d4e6f4]"
                 initial={{ width: 0 }}
                 whileInView={{ width: "96%" }}
                 transition={{ duration: 1.4, ease: "easeOut" }}
@@ -793,7 +824,7 @@ function Dashboard({ onApply }: { onApply: () => void }) {
           </div>
           <button
             onClick={onApply}
-            className="group flex items-center gap-2.5 px-8 py-4 bg-[#d4e6f4] text-[#050505] text-[11px] font-bold tracking-[0.18em] uppercase hover:bg-white transition-all whitespace-nowrap cursor-pointer shadow-[0_0_25px_rgba(133,189,226,0.15)] hover:shadow-[0_0_35px_rgba(133,189,226,0.25)]"
+            className="group flex items-center gap-2.5 px-8 py-4 bg-[#d4e6f4] text-[#050505] text-[11px] font-black tracking-[0.18em] uppercase hover:bg-white transition-all whitespace-nowrap cursor-pointer shadow-[0_0_25px_rgba(133,189,226,0.15)] hover:shadow-[0_0_35px_rgba(133,189,226,0.25)]"
           >
             Apply Now <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
           </button>
@@ -827,34 +858,42 @@ function Transformation() {
   ];
 
   return (
-    <section className="bg-[#050505] py-28 lg:py-36 border-t border-white/[0.06]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <section className="relative bg-[#050505] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-[40%] left-[-10%] w-[35vw] h-[35vw] bg-[#2D4A77]/4 rounded-full filter blur-[140px] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <SectionHead
           eyebrow="Why Join"
           title={<>Your Transformation<br />Journey</>}
           sub="A structured, outcome-driven programme that converts academic potential into professional readiness."
         />
-        <div className="flex flex-col gap-px bg-white/[0.06]">
+        
+        <div className="grid lg:grid-cols-3 gap-6 mt-10">
           {phases.map((p, i) => (
             <motion.div
               key={p.period}
-              className="grid md:grid-cols-[160px_1fr_1fr]"
-              initial={{ opacity: 0, x: -24 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              className="bg-[#0D0D0D]/55 border border-white/[0.06] rounded-sm p-8 group hover:border-[#85bde2]/20 hover:bg-[#0D0D0D] transition-all duration-300 hover:shadow-[0_15px_30px_rgba(133,189,226,0.04)] flex flex-col"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
               viewport={{ once: true }}
             >
-              <div className="bg-[#0D0D0D] p-7 flex flex-col justify-center border-r border-white/[0.06]">
-                <p className="text-[9px] tracking-[0.3em] text-[#85bde2] uppercase mb-1">{p.period}</p>
-                <p className="text-sm font-bold text-white">{p.title}</p>
+              <div className="flex justify-between items-center mb-6">
+                <span className="bg-[#85bde2]/10 border border-[#85bde2]/25 text-[#85bde2] px-3 py-1 text-[9px] uppercase tracking-widest font-black rounded-full">
+                  {p.period}
+                </span>
+                <p className="text-base font-black text-white uppercase tracking-wide">{p.title}</p>
               </div>
-              <div className="bg-[#050505] p-7 border-r border-white/[0.06]">
-                <p className="text-[9px] text-[#717182] tracking-widest uppercase mb-2">Before</p>
-                <p className="text-sm text-[#717182] leading-relaxed">{p.before}</p>
+
+              <div className="p-4 bg-black/40 border border-white/[0.03] rounded-sm mb-4 flex-1">
+                <p className="text-[8px] text-[#717182] tracking-[0.2em] uppercase font-bold mb-2">Before</p>
+                <p className="text-xs text-[#717182] leading-relaxed font-light">{p.before}</p>
               </div>
-              <div className="bg-[#080808] p-7">
-                <p className="text-[9px] text-[#85bde2] tracking-widest uppercase mb-2">After PROMINENT</p>
-                <p className="text-sm text-[#d4e6f4] leading-relaxed">{p.after}</p>
+
+              <div className="p-4 bg-[#85bde2]/5 border border-[#85bde2]/15 rounded-sm">
+                <p className="text-[8px] text-[#85bde2] tracking-[0.2em] uppercase font-bold mb-2">After PROMINENT</p>
+                <p className="text-xs text-[#d4e6f4] leading-relaxed font-medium">{p.after}</p>
               </div>
             </motion.div>
           ))}
@@ -878,20 +917,23 @@ function Legacy() {
   };
 
   return (
-    <section id="legacy" className="bg-[#0A0A0A] py-28 lg:py-36 border-t border-white/[0.06]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <section id="legacy" className="relative bg-gradient-to-b from-[#0A0A0A] to-[#050505] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+      {/* Background lighting */}
+      <div className="absolute top-[30%] right-[-10%] w-[35vw] h-[35vw] bg-[#85bde2]/3 rounded-full filter blur-[140px] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <SectionHead eyebrow="Legacy" title={<>Five Years of<br />Institution Building.</>} />
 
         {/* Year selector */}
-        <div className="flex gap-1 mb-10 overflow-x-auto pb-2 scrollbar-hide">
+        <div className="flex gap-2 mb-10 overflow-x-auto pb-2 scrollbar-hide">
           {years.map((y) => (
             <button
               key={y}
               onClick={() => setActive(y)}
-              className={`relative px-7 py-3 text-sm font-bold tracking-wider transition-all whitespace-nowrap ${
+              className={`relative px-7 py-3 text-xs font-black tracking-[0.15em] uppercase transition-all rounded-sm cursor-pointer whitespace-nowrap ${
                 active === y
-                  ? "bg-[#d4e6f4] text-[#050505]"
-                  : "border border-white/[0.08] text-[#A1A1AA] hover:border-white/20 hover:text-white"
+                  ? "bg-gradient-to-r from-[#85bde2] to-[#d4e6f4] text-[#050505] shadow-[0_0_20px_rgba(133,189,226,0.15)]"
+                  : "bg-[#0D0D0D]/40 border border-white/[0.08] text-[#A1A1AA] hover:border-[#85bde2]/30 hover:text-white"
               }`}
             >
               {y}
@@ -906,26 +948,26 @@ function Legacy() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.35 }}
-            className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.06]"
+            className="bg-[#0D0D0D]/65 border border-white/[0.08] hover:border-[#85bde2]/20 p-1.5 rounded-sm grid md:grid-cols-2 lg:grid-cols-4 gap-4 transition-all duration-300"
           >
-            <div className="bg-[#0A0A0A] p-8 lg:col-span-2">
-              <p className="text-[9px] text-[#A1A1AA] tracking-widest uppercase mb-3">Year in Context</p>
-              <p className="text-base text-[#d4e6f4] leading-relaxed mb-6"
+            <div className="bg-[#050505]/40 border border-white/[0.03] rounded-sm p-8 lg:col-span-2">
+              <p className="text-[9px] text-[#717182] tracking-widest uppercase mb-3 font-bold">Year in Context</p>
+              <p className="text-base text-[#d4e6f4] leading-relaxed mb-6 font-light"
                 style={{ fontFamily: "'Playfair Display',serif", fontStyle: "italic" }}>
                 "{data[active].desc}"
               </p>
-              <p className="text-[9px] text-[#85bde2] tracking-widest uppercase">AY {active}–{(active + 1).toString().slice(-2)}</p>
+              <p className="text-[9px] text-[#85bde2] tracking-widest uppercase font-bold">AY {active}–{(active + 1).toString().slice(-2)}</p>
             </div>
-            <div className="bg-[#080808] p-8 border-l border-white/[0.06]">
-              <p className="text-[9px] text-[#A1A1AA] tracking-widest uppercase mb-3">Flagship Event</p>
-              <p className="text-sm text-white font-medium leading-relaxed">{data[active].event}</p>
+            <div className="bg-[#050505]/40 border border-white/[0.03] rounded-sm p-8">
+              <p className="text-[9px] text-[#717182] tracking-widest uppercase mb-3 font-bold">Flagship Event</p>
+              <p className="text-sm text-white font-black uppercase tracking-wide leading-relaxed">{data[active].event}</p>
             </div>
-            <div className="bg-[#0A0A0A] p-8 border-l border-white/[0.06]">
-              <p className="text-[9px] text-[#A1A1AA] tracking-widest uppercase mb-3">President</p>
-              <p className="text-base font-bold text-white mb-1">{data[active].president}</p>
+            <div className="bg-[#050505]/40 border border-white/[0.03] rounded-sm p-8">
+              <p className="text-[9px] text-[#717182] tracking-widest uppercase mb-3 font-bold">President</p>
+              <p className="text-base font-black text-white uppercase tracking-wide mb-1">{data[active].president}</p>
               <div className="h-[1px] w-6 bg-[#85bde2] my-3" />
-              <p className="text-[9px] text-[#A1A1AA] tracking-widest uppercase mb-1">Win</p>
-              <p className="text-xs text-[#d4e6f4]">{data[active].win}</p>
+              <p className="text-[9px] text-[#717182] tracking-widest uppercase mb-1.5 font-bold">Win</p>
+              <p className="text-xs text-[#d4e6f4] font-medium leading-relaxed">{data[active].win}</p>
             </div>
           </motion.div>
         </AnimatePresence>
@@ -950,8 +992,12 @@ function Board() {
   ];
 
   return (
-    <section id="board" className="bg-[#050505] py-28 lg:py-36 border-t border-white/[0.06]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <section id="board" className="relative bg-[#050505] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-[20%] right-[-10%] w-[45vw] h-[45vw] bg-[#85bde2]/3 rounded-full filter blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-[10%] left-[-10%] w-[35vw] h-[35vw] bg-[#2D4A77]/4 rounded-full filter blur-[130px] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <SectionHead
           eyebrow="Leadership"
           title={<>Executive Board<br />2026–27</>}
@@ -960,7 +1006,7 @@ function Board() {
 
         {/* Widescreen Team/Cohort Banner */}
         <motion.div
-          className="mb-10 relative group overflow-hidden border border-white/[0.08] bg-[#0A0A0A] shadow-[0_10px_45px_rgba(0,0,0,0.85)]"
+          className="mb-10 relative group overflow-hidden border border-white/[0.08] bg-[#0A0A0A] shadow-[0_15px_45px_rgba(0,0,0,0.85)] rounded-sm"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
@@ -977,16 +1023,16 @@ function Board() {
             <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/80 via-[#050505]/20 to-transparent" />
           </div>
           
-          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 flex flex-col md:flex-row md:items-end justify-between gap-6 z-10">
             <div className="max-w-xl">
               <div className="flex items-center gap-2 mb-2.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#85bde2] animate-pulse" />
                 <span className="text-[9px] tracking-[0.3em] text-[#85bde2] uppercase font-bold">The Cohort</span>
               </div>
-              <h3 className="text-xl md:text-3xl font-black text-white leading-tight mb-2 tracking-tight">
+              <h3 className="text-xl md:text-3xl font-black text-white leading-tight mb-2 tracking-tight uppercase">
                 PROMINENT Team 2026–27
               </h3>
-              <p className="text-xs md:text-sm text-[#A1A1AA] leading-relaxed">
+              <p className="text-xs md:text-sm text-[#A1A1AA] leading-relaxed font-light">
                 84 driven members representing a culture of rigor, collaboration, and high performance — trained for corporate readiness and marketing leadership.
               </p>
             </div>
@@ -1002,11 +1048,11 @@ function Board() {
         </motion.div>
 
         {/* Top 2 leadership */}
-        <div className="grid md:grid-cols-2 gap-px bg-white/[0.06] mb-px">
+        <div className="grid md:grid-cols-2 gap-6 mb-6">
           {leadership.map((l, i) => (
             <motion.div
               key={l.name}
-              className="bg-[#0D0D0D] p-10 flex items-center gap-6 group hover:bg-[#0F0F12] border border-white/[0.04] hover:border-[#85bde2]/20 hover:shadow-[0_15px_30px_rgba(133,189,226,0.06)] transition-all duration-500"
+              className="bg-[#0D0D0D]/60 p-10 flex items-center gap-6 group hover:bg-[#0D0D0D] border border-white/[0.06] hover:border-[#85bde2]/30 hover:shadow-[0_15px_35px_rgba(133,189,226,0.06)] rounded-sm transition-all duration-500"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
@@ -1018,32 +1064,32 @@ function Board() {
                 </span>
               </div>
               <div>
-                <p className="text-[9px] tracking-[0.3em] text-[#85bde2] uppercase mb-1">{l.role}</p>
-                <p className="text-lg font-bold text-white">{l.name}</p>
-                <p className="text-xs text-[#717182]">{l.dept}</p>
+                <p className="text-[9px] tracking-[0.3em] text-[#85bde2] uppercase mb-1 font-bold">{l.role}</p>
+                <p className="text-lg font-black text-white uppercase tracking-wide">{l.name}</p>
+                <p className="text-xs text-[#717182] font-semibold mt-0.5">{l.dept}</p>
               </div>
             </motion.div>
           ))}
         </div>
 
         {/* Directors grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.06]">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {directors.map((d, i) => (
             <motion.div
               key={d.name}
-              className="bg-[#050505] p-7 hover:bg-[#09090C] border border-white/[0.02] hover:border-[#85bde2]/15 hover:shadow-[0_10px_25px_rgba(133,189,226,0.04)] group transition-all duration-500"
+              className="bg-[#0D0D0D]/40 p-7 hover:bg-[#0D0D0D]/85 border border-white/[0.05] hover:border-[#85bde2]/20 hover:shadow-[0_10px_25px_rgba(133,189,226,0.04)] group rounded-sm transition-all duration-500"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + i * 0.07, duration: 0.45 }}
               viewport={{ once: true }}
             >
               <div className="w-10 h-10 bg-gradient-to-br from-[#1C1C1E] to-[#252528] border border-white/10 group-hover:border-[#85bde2]/35 flex items-center justify-center mb-5 transition-all duration-300">
-                <span className="text-xs font-bold text-[#A1A1AA] group-hover:text-[#85bde2] transition-colors">
+                <span className="text-xs font-bold text-[#717182] group-hover:text-[#85bde2] transition-colors">
                   {d.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
                 </span>
               </div>
-              <p className="text-sm font-semibold text-white mb-1">{d.name}</p>
-              <p className="text-[10px] text-[#A1A1AA] tracking-wide">{d.role}</p>
+              <p className="text-sm font-bold text-white mb-1 uppercase tracking-wide">{d.name}</p>
+              <p className="text-[10px] text-[#A1A1AA] font-semibold">{d.role}</p>
             </motion.div>
           ))}
         </div>
@@ -1064,31 +1110,35 @@ function Speakers() {
   ];
 
   return (
-    <section className="bg-[#0A0A0A] py-28 lg:py-36 border-t border-white/[0.06]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <section className="relative bg-gradient-to-b from-[#0A0A0A] to-[#050505] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute bottom-[20%] left-[-10%] w-[35vw] h-[35vw] bg-[#85bde2]/3 rounded-full filter blur-[130px] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <SectionHead
           eyebrow="Featured Speakers"
           title={<>Industry Leaders.<br />Real Conversations.</>}
           sub="We bring the C-suite to campus. No simulations. No hypotheticals. Only practitioners."
         />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.05]">
+        
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {speakers.map((s, i) => (
             <motion.div
               key={s.name}
-              className="bg-[#0A0A0A] p-7 hover:bg-[#0E0E0E] transition-colors group"
+              className="bg-[#0D0D0D]/50 border border-white/[0.05] hover:border-[#85bde2]/20 hover:bg-[#0D0D0D] p-7 rounded-sm transition-all duration-300 hover:shadow-[0_15px_30px_rgba(133,189,226,0.04)] group"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.07, duration: 0.45 }}
               viewport={{ once: true }}
             >
-              <div className="w-11 h-11 bg-[#1C1C1E] border border-white/08 flex items-center justify-center mb-6 text-xs font-black text-[#d4e6f4]">
+              <div className="w-11 h-11 bg-gradient-to-br from-[#1C1C1E] to-[#252528] border border-white/10 group-hover:border-[#85bde2]/35 flex items-center justify-center mb-6 text-xs font-black text-[#A1A1AA] group-hover:text-[#85bde2] transition-colors">
                 {s.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
               </div>
               <p className="text-base font-bold text-white mb-0.5">{s.name}</p>
-              <p className="text-[10px] text-[#85bde2] tracking-wide mb-0.5 uppercase">{s.title}</p>
-              <p className="text-xs text-[#717182] mb-5">{s.company}</p>
+              <p className="text-[10px] text-[#85bde2] tracking-wide mb-0.5 uppercase font-semibold">{s.title}</p>
+              <p className="text-xs text-[#717182] mb-5 font-medium">{s.company}</p>
               <div className="h-[1px] w-full bg-white/[0.06] mb-4" />
-              <p className="text-xs text-[#A1A1AA] italic leading-relaxed" style={{ fontFamily: "'Playfair Display',serif" }}>
+              <p className="text-xs text-[#A1A1AA] italic leading-relaxed font-light" style={{ fontFamily: "'Playfair Display',serif" }}>
                 &ldquo;{s.topic}&rdquo;
               </p>
             </motion.div>
@@ -1111,33 +1161,37 @@ function Network() {
   ];
 
   return (
-    <section id="network" className="bg-[#050505] py-28 lg:py-36 border-t border-white/[0.06]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <section id="network" className="relative bg-[#050505] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-[20%] right-[-10%] w-[35vw] h-[35vw] bg-[#2D4A77]/4 rounded-full filter blur-[140px] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <SectionHead
           eyebrow="Alumni Network"
           title={<>Where Our<br />Members Go</>}
           sub="PROMINENT alumni are placed across the most competitive firms in consulting, marketing, and strategy."
         />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.06]">
+        
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {alumni.map((a, i) => (
             <motion.div
               key={a.name}
-              className="bg-[#050505] p-7 hover:bg-[#0A0A0A] transition-colors group"
+              className="bg-[#0D0D0D]/50 border border-white/[0.05] hover:border-[#85bde2]/20 hover:bg-[#0D0D0D] p-7 rounded-sm transition-all duration-300 hover:shadow-[0_15px_30px_rgba(133,189,226,0.04)] group"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.07, duration: 0.45 }}
               viewport={{ once: true }}
             >
               <div className="flex items-start justify-between mb-5">
-                <div className="w-10 h-10 bg-[#1C1C1E] flex items-center justify-center text-xs font-black text-[#d4e6f4]">
+                <div className="w-10 h-10 bg-gradient-to-br from-[#1C1C1E] to-[#252528] border border-white/10 group-hover:border-[#85bde2]/35 flex items-center justify-center text-xs font-black text-[#A1A1AA] group-hover:text-[#85bde2] transition-colors">
                   {a.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
                 </div>
-                <span className="text-[9px] text-[#717182] tracking-widest">Batch {a.batch}</span>
+                <span className="text-[9px] text-[#717182] tracking-[0.25em] font-bold">BATCH {a.batch}</span>
               </div>
               <p className="text-sm font-bold text-white mb-0.5">{a.name}</p>
-              <p className="text-[10px] text-[#85bde2] mb-0.5 tracking-wide">{a.role}</p>
-              <p className="text-[10px] text-[#A1A1AA] flex items-center gap-1.5">
-                <MapPin size={9} /> {a.company}
+              <p className="text-[10px] text-[#85bde2] mb-1 tracking-wide font-semibold">{a.role}</p>
+              <p className="text-[10px] text-[#A1A1AA] flex items-center gap-1.5 font-light">
+                <MapPin size={9} className="text-[#85bde2]" /> {a.company}
               </p>
             </motion.div>
           ))}
@@ -1157,45 +1211,48 @@ function Recruitment({ onApply }: { onApply: () => void }) {
   ];
 
   return (
-    <section id="join" className="bg-[#0A0A0A] py-28 lg:py-36 border-t border-white/[0.06]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <section id="join" className="relative bg-gradient-to-b from-[#050505] to-[#0A0A0A] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-[20%] right-[-10%] w-[40vw] h-[40vw] bg-[#85bde2]/3 rounded-full filter blur-[150px] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <SectionHead
           eyebrow="Recruitment"
           title={<>Join PROMINENT</>}
           sub="A selective, rigorous process — because the work we do demands the best."
         />
 
-        <div className="grid md:grid-cols-4 gap-px bg-white/[0.05] mb-8">
+        <div className="grid md:grid-cols-4 gap-6 mb-10">
           {steps.map((s, i) => (
             <motion.div
               key={s.n}
-              className="bg-[#0A0A0A] p-8 hover:bg-[#0E0E0E] transition-colors"
+              className="bg-[#0D0D0D]/50 border border-white/[0.05] hover:border-[#85bde2]/20 hover:bg-[#0D0D0D] p-8 rounded-sm transition-all duration-300 hover:shadow-[0_15px_30px_rgba(133,189,226,0.04)] group"
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
               viewport={{ once: true }}
             >
-              <p className="text-6xl font-black text-white/[0.05] mb-5 leading-none">{s.n}</p>
-              <p className="text-sm font-bold text-white mb-2">{s.title}</p>
-              <p className="text-xs text-[#717182] leading-relaxed">{s.desc}</p>
+              <p className="text-6xl font-black text-white/[0.05] group-hover:text-[#85bde2]/15 transition-colors mb-5 leading-none">{s.n}</p>
+              <p className="text-sm font-bold text-white mb-2 uppercase tracking-wide">{s.title}</p>
+              <p className="text-xs text-[#717182] leading-relaxed font-light">{s.desc}</p>
             </motion.div>
           ))}
         </div>
 
         <motion.div
-          className="border border-[#85bde2]/30 bg-[#080808] p-8 md:p-12 flex flex-col md:flex-row items-center gap-8"
+          className="border border-[#85bde2]/25 bg-[#0D0D0D]/80 backdrop-blur-sm p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 shadow-[0_20px_50px_rgba(0,0,0,0.6)] rounded-sm"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <div className="flex-1">
+          <div className="flex-1 w-full">
             <div className="flex items-center gap-2 mb-3">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[9px] tracking-[0.3em] text-emerald-500 uppercase">Applications Open</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[9px] tracking-[0.25em] text-emerald-400 uppercase font-bold">Applications Open</span>
             </div>
-            <h3 className="text-2xl font-black text-white mb-2">AY 2026–27 Cohort</h3>
-            <p className="text-sm text-[#A1A1AA] leading-relaxed max-w-md">
+            <h3 className="text-2xl font-black text-white uppercase tracking-wide mb-2">AY 2026–27 Cohort</h3>
+            <p className="text-sm text-[#A1A1AA] leading-relaxed max-w-md font-light">
               480 applications received. 20 seats remaining. This is not a deadline you want to miss.
             </p>
           </div>
@@ -1310,8 +1367,11 @@ function Gallery() {
   const filteredItems = filter === "all" ? galleryItems : galleryItems.filter(item => item.cat === filter);
 
   return (
-    <section id="gallery" className="bg-[#050505] py-28 lg:py-36 border-t border-white/[0.06]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <section id="gallery" className="relative bg-gradient-to-b from-[#050505] to-[#0A0A0A] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-[20%] left-[-10%] w-[35vw] h-[35vw] bg-[#85bde2]/3 rounded-full filter blur-[130px] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <SectionHead
           eyebrow="Glance & Gallery"
           title={<>PROMINENT<br />At a Glance</>}
@@ -1319,15 +1379,15 @@ function Gallery() {
         />
 
         {/* Filter Tabs */}
-        <div className="flex gap-2 mb-10 overflow-x-auto pb-2 scrollbar-hide">
+        <div className="flex gap-2.5 mb-10 overflow-x-auto pb-2 scrollbar-hide">
           {["all", "events", "cohort", "leadership", "videos"].map((cat) => (
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`px-5 py-2 text-xs font-bold tracking-wider uppercase transition-all whitespace-nowrap rounded-sm cursor-pointer ${
+              className={`px-5 py-2.5 text-xs font-black tracking-[0.15em] uppercase transition-all whitespace-nowrap rounded-sm cursor-pointer ${
                 filter === cat
-                  ? "bg-[#85bde2] text-[#050505]"
-                  : "border border-white/[0.08] text-[#A1A1AA] hover:border-white/20 hover:text-white"
+                  ? "bg-gradient-to-r from-[#85bde2] to-[#d4e6f4] text-[#050505] shadow-[0_0_20px_rgba(133,189,226,0.15)]"
+                  : "bg-[#0D0D0D]/40 border border-white/[0.08] text-[#A1A1AA] hover:border-[#85bde2]/30 hover:text-white"
               }`}
             >
               {cat === "all" ? "All Media" : cat}
@@ -1363,8 +1423,8 @@ function Gallery() {
               {/* Overlay content on hover */}
               <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5 z-20">
                 <span className="text-[8px] tracking-[0.2em] text-[#85bde2] uppercase font-bold mb-1">{item.cat}</span>
-                <h4 className="text-sm font-bold text-white mb-1">{item.title}</h4>
-                <p className="text-[10px] text-[#A1A1AA] leading-relaxed line-clamp-2">{item.desc}</p>
+                <h4 className="text-sm font-bold text-white mb-1 uppercase tracking-wide">{item.title}</h4>
+                <p className="text-[10px] text-[#A1A1AA] leading-relaxed line-clamp-2 font-light">{item.desc}</p>
               </div>
             </motion.div>
           ))}
@@ -1402,7 +1462,7 @@ function Gallery() {
                   <video src={lightboxItem.src} controls autoPlay className="max-h-[75vh] w-full object-contain" />
                 )}
               </div>
-              <p className="text-sm font-medium text-white mt-3">{lightboxItem.title}</p>
+              <p className="text-sm font-bold text-white mt-3 uppercase tracking-wide">{lightboxItem.title}</p>
             </motion.div>
           </motion.div>
         )}
