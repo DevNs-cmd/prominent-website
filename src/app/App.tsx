@@ -1670,11 +1670,145 @@ function ApplyModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   );
 }
 
+// ─── Marketing Mela Modal ──────────────────────────────────────────────────
+function MarketingMelaModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [dept, setDept] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      // Save submission data to Supabase if config is set
+      const isPlaceholder = (import.meta.env.VITE_SUPABASE_URL as string || "").includes("placeholder");
+      if (!isPlaceholder) {
+        await supabase.from("mela_registrations").insert([
+          {
+            full_name: name,
+            phone_number: phone,
+            department: dept,
+            registered_at: new Date().toISOString()
+          }
+        ]);
+      }
+    } catch (err) {
+      console.warn("Supabase insert ignored/failed:", err);
+    }
+
+    // Redirect to WhatsApp
+    const message = `Hello PROMINENT! I want to register for the Marketing Mela.\n\nName: ${name}\nPhone: ${phone}\nDepartment/Year: ${dept}`;
+    const waUrl = `https://wa.me/919971306762?text=${encodeURIComponent(message)}`;
+    
+    setLoading(false);
+    onClose();
+    window.open(waUrl, "_blank");
+  };
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+        >
+          <motion.div
+            className="relative w-full max-w-md bg-[#0D0D0D] border border-white/[0.08] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.85)] overflow-hidden rounded-sm group"
+            initial={{ scale: 0.94, y: 10, opacity: 0 }}
+            animate={{ scale: 1, y: 0, opacity: 1 }}
+            exit={{ scale: 0.94, y: 10, opacity: 0 }}
+            transition={{ type: "spring", damping: 25, stiffness: 220 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Ambient background glow inside card */}
+            <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#85bde2]/10 rounded-full filter blur-2xl pointer-events-none" />
+
+            <button
+              onClick={onClose}
+              className="absolute top-5 right-5 text-white/40 hover:text-white cursor-pointer transition-colors"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="flex items-center gap-2.5 mb-2.5">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#85bde2] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#85bde2]"></span>
+              </span>
+              <span className="text-[9px] tracking-[0.25em] text-[#85bde2] uppercase font-black">Upcoming Event</span>
+            </div>
+
+            <h3 className="text-2xl font-black text-white tracking-tight uppercase mb-2">
+              Marketing Mela Registration
+            </h3>
+            <p className="text-xs text-[#A1A1AA] leading-relaxed mb-6 font-light">
+              Enter your details below to register. Upon clicking submit, you will be redirected to WhatsApp to directly coordinate with the organizing team.
+            </p>
+
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[9px] text-[#A1A1AA] uppercase tracking-wider font-semibold">Full Name</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Rajiv Kumar"
+                  className="px-3.5 py-2.5 bg-[#050505] border border-white/[0.08] text-xs text-white focus:outline-none focus:border-[#85bde2] transition-colors rounded-sm"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[9px] text-[#A1A1AA] uppercase tracking-wider font-semibold">WhatsApp Number</label>
+                <input
+                  type="tel"
+                  required
+                  placeholder="e.g. 9876543210"
+                  className="px-3.5 py-2.5 bg-[#050505] border border-white/[0.08] text-xs text-white focus:outline-none focus:border-[#85bde2] transition-colors rounded-sm"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[9px] text-[#A1A1AA] uppercase tracking-wider font-semibold">Department & Year</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. BBA (Marketing), 2nd Year"
+                  className="px-3.5 py-2.5 bg-[#050505] border border-white/[0.08] text-xs text-white focus:outline-none focus:border-[#85bde2] transition-colors rounded-sm"
+                  value={dept}
+                  onChange={(e) => setDept(e.target.value)}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-4 mt-2 bg-[#85bde2] text-[#050505] text-[10px] font-black tracking-[0.2em] uppercase hover:bg-white transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(133,189,226,0.15)] disabled:opacity-50"
+              >
+                {loading ? "Redirecting..." : "Register & Message WhatsApp"}
+                {!loading && <ArrowRight size={12} />}
+              </button>
+            </form>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 // ─── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
   const [splashDone, setSplashDone] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showApplyModal, setShowApplyModal] = useState(false);
+  const [showMelaModal, setShowMelaModal] = useState(false);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 50);
@@ -1709,8 +1843,27 @@ export default function App() {
           <Sponsors />
           <Footer />
 
-          {/* Modal popup form */}
+          {/* Floating Upcoming Event Badge */}
+          <motion.div
+            onClick={() => setShowMelaModal(true)}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1, duration: 0.6 }}
+            className="fixed bottom-6 left-6 z-40 bg-[#0D0D0D]/90 backdrop-blur-md border border-[#85bde2]/30 hover:border-[#85bde2] rounded-full px-4.5 py-2.5 flex items-center gap-3 shadow-[0_10px_35px_rgba(0,0,0,0.6)] cursor-pointer group transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(133,189,226,0.15)]"
+          >
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#85bde2] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#85bde2]"></span>
+            </span>
+            <span className="text-[10px] tracking-[0.2em] font-black uppercase text-white group-hover:text-[#85bde2] transition-colors">
+              Marketing Mela 🔥
+            </span>
+            <ArrowRight size={10} className="text-[#85bde2] group-hover:translate-x-0.5 transition-transform" />
+          </motion.div>
+
+          {/* Modal popup forms */}
           <ApplyModal open={showApplyModal} onClose={() => setShowApplyModal(false)} />
+          <MarketingMelaModal open={showMelaModal} onClose={() => setShowMelaModal(false)} />
         </>
       )}
     </div>
