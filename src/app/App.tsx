@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useInView, AnimatePresence } from "motion/react";
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 import prominentLogo from "@/imports/Prominent_Logo.jpeg";
+import { supabase } from "@/lib/supabase";
 import image0 from "@/imports/image_0.jpeg";
 import image1 from "@/imports/image_1.jpeg";
 import image2 from "@/imports/image_2.jpeg";
@@ -157,7 +158,7 @@ const NAV_LINKS = [
   { label: "Join", id: "join" },
 ];
 
-function Nav({ scrolled }: { scrolled: boolean }) {
+function Nav({ scrolled, onApply }: { scrolled: boolean; onApply: () => void }) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
 
@@ -215,8 +216,8 @@ function Nav({ scrolled }: { scrolled: boolean }) {
         </nav>
 
         <button
-          onClick={() => scrollTo("join")}
-          className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 text-[10px] tracking-[0.18em] uppercase font-semibold border border-[#d4e6f4]/35 text-[#d4e6f4] hover:bg-[#d4e6f4] hover:text-[#050505] transition-all duration-200"
+          onClick={onApply}
+          className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 text-[10px] tracking-[0.18em] uppercase font-semibold border border-[#85bde2]/35 text-[#85bde2] hover:bg-[#85bde2] hover:text-[#050505] hover:shadow-[0_0_20px_rgba(133,189,226,0.25)] transition-all duration-200 cursor-pointer"
         >
           Apply Now <ArrowRight size={11} />
         </button>
@@ -276,8 +277,8 @@ function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
-// ─── Hero with Event Slider ───────────────────────────────────────────────────
-function Hero() {
+// ─── Hero with Event Slider (Redesigned & Responsive) ─────────────────────────
+function Hero({ onApply }: { onApply: () => void }) {
   const [slide, setSlide] = useState(0);
   const [dir, setDir] = useState(1);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -294,9 +295,9 @@ function Hero() {
     timerRef.current = setInterval(() => {
       setDir(1);
       setSlide((s) => (s + 1) % EVENT_SLIDES.length);
-    }, 5000);
+    }, 5500);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, []);
+  }, [slide]);
 
   const words = ["Strategy.", "Leadership.", "Innovation.", "Execution."];
   const [wIdx, setWIdx] = useState(0);
@@ -305,77 +306,59 @@ function Hero() {
     return () => clearInterval(t);
   }, []);
 
-  const stats = [
-    { value: 25, suffix: "+", label: "Corporate Speakers" },
-    { value: 50, suffix: "+", label: "Events Conducted" },
-    { value: 15, suffix: "+", label: "Collaborations" },
-    { value: 5000, suffix: "+", label: "Students Impacted" },
-  ];
-
-  const variants = {
-    enter: (d: number) => ({ x: d > 0 ? "6%" : "-6%", opacity: 0, scale: 1.04 }),
+  const slideVariants = {
+    enter: (d: number) => ({ x: d > 0 ? "8%" : "-8%", opacity: 0, scale: 0.96 }),
     center: { x: 0, opacity: 1, scale: 1 },
-    exit: (d: number) => ({ x: d > 0 ? "-6%" : "6%", opacity: 0, scale: 0.97 }),
+    exit: (d: number) => ({ x: d > 0 ? "-8%" : "8%", opacity: 0, scale: 0.96 }),
   };
 
   return (
-    <section id="hero" className="relative min-h-screen flex flex-col bg-[#050505]">
-      {/* Full-bleed image slider background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <AnimatePresence custom={dir} initial={false}>
-          <motion.div
-            key={slide}
-            custom={dir}
-            variants={variants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.9, ease: [0.32, 0.72, 0, 1] }}
-            className="absolute inset-0"
-          >
-            <img
-              src={EVENT_SLIDES[slide].img}
-              alt={EVENT_SLIDES[slide].title}
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-        </AnimatePresence>
-        {/* Multi-layer overlay for readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/80 to-[#050505]/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]/60" />
+    <section id="hero" className="relative min-h-screen flex flex-col justify-center bg-[#050505] overflow-hidden pt-[80px]">
+      {/* Background blueprint grid & radial glow */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <svg className="absolute inset-0 w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="hero-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#85bde2" strokeWidth="0.5" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#hero-grid)" />
+        </svg>
+        <div className="absolute top-[20%] left-[10%] w-[40vw] h-[40vw] bg-[#85bde2] rounded-full filter blur-[150px] opacity-[0.04]" />
+        <div className="absolute bottom-[10%] right-[10%] w-[35vw] h-[35vw] bg-[#2D4A77] rounded-full filter blur-[130px] opacity-[0.03]" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 flex-1 flex flex-col justify-center pt-[68px]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full py-20 lg:py-28">
-          <div className="max-w-2xl">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full py-16 lg:py-24 flex-1 flex flex-col justify-center">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          {/* Left content block */}
+          <div className="lg:col-span-7 flex flex-col justify-center">
             <motion.div
-              className="flex items-center gap-3 mb-6"
+              className="flex items-center gap-3 mb-5"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
+              transition={{ delay: 0.1, duration: 0.6 }}
             >
-              <div className="h-[1px] w-10 bg-[#85bde2]" />
-              <span className="text-[10px] tracking-[0.35em] text-[#85bde2] uppercase font-semibold">
+              <div className="h-[1.5px] w-8 bg-[#85bde2]" />
+              <span className="text-[10px] tracking-[0.35em] text-[#85bde2] uppercase font-bold">
                 The Professional Marketing Institution
               </span>
             </motion.div>
 
             <motion.h1
-              className="text-[clamp(52px,8vw,88px)] font-black leading-[0.95] tracking-[-0.03em] mb-6 bg-gradient-to-r from-white via-[#d4e6f4] to-[#85bde2] bg-clip-text text-transparent"
+              className="text-[clamp(44px,7vw,80px)] font-black leading-[0.95] tracking-[-0.03em] mb-5 bg-gradient-to-r from-white via-[#d4e6f4] to-[#85bde2] bg-clip-text text-transparent"
               style={{ fontFamily: "Inter,sans-serif" }}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ delay: 0.25, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
               PROMINENT
             </motion.h1>
 
             <motion.p
-              className="text-lg text-[#A1A1AA] font-light mb-4 leading-snug"
-              initial={{ opacity: 0, y: 20 }}
+              className="text-base lg:text-lg text-[#A1A1AA] font-light mb-4 leading-snug"
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
+              transition={{ delay: 0.35, duration: 0.6 }}
             >
               Building Future{" "}
               <span className="text-white font-medium">Marketing Leaders</span>
@@ -385,17 +368,17 @@ function Hero() {
               className="h-10 flex items-center mb-8"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.65 }}
+              transition={{ delay: 0.45 }}
             >
               <AnimatePresence mode="wait">
                 <motion.span
                   key={wIdx}
-                  className="text-2xl text-[#d4e6f4] font-light"
+                  className="text-xl lg:text-2xl text-[#85bde2] font-semibold"
                   style={{ fontFamily: "'Playfair Display',serif", fontStyle: "italic" }}
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.4 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.35 }}
                 >
                   {words[wIdx]}
                 </motion.span>
@@ -406,97 +389,108 @@ function Hero() {
               className="flex flex-wrap gap-4"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.5 }}
+              transition={{ delay: 0.55, duration: 0.5 }}
             >
               <button
-                onClick={() => scrollTo("events")}
-                className="group flex items-center gap-2.5 px-7 py-3.5 bg-[#d4e6f4] text-[#050505] text-[11px] font-bold tracking-[0.18em] uppercase hover:bg-white transition-all duration-200"
+                onClick={onApply}
+                className="group flex items-center gap-2.5 px-7 py-3.5 bg-[#d4e6f4] text-[#050505] text-[11px] font-bold tracking-[0.18em] uppercase hover:bg-white transition-all duration-200 shadow-[0_0_30px_rgba(133,189,226,0.15)] hover:shadow-[0_0_40px_rgba(133,189,226,0.25)] cursor-pointer"
               >
-                Explore Events
+                Apply Now
                 <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
               </button>
               <button
-                onClick={() => scrollTo("board")}
-                className="flex items-center gap-2.5 px-7 py-3.5 border border-[#d4e6f4]/30 text-[#d4e6f4] text-[11px] font-bold tracking-[0.18em] uppercase hover:border-[#d4e6f4] hover:bg-white/5 transition-all duration-200"
+                onClick={() => scrollTo("events")}
+                className="flex items-center gap-2.5 px-7 py-3.5 border border-[#d4e6f4]/20 text-[#d4e6f4] text-[11px] font-bold tracking-[0.18em] uppercase hover:border-[#d4e6f4] hover:bg-white/5 transition-all duration-200 cursor-pointer"
               >
-                Meet The Board
+                Explore Events
               </button>
             </motion.div>
           </div>
-        </div>
 
-        {/* Slide info + controls */}
-        <div className="relative z-10 border-t border-white/[0.08] bg-[#050505]/70 backdrop-blur-md">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex items-center gap-6">
-            {/* Thumbnails */}
-            <div className="hidden lg:flex gap-2 flex-1 overflow-hidden">
-              {EVENT_SLIDES.map((ev, i) => (
-                <button
-                  key={i}
-                  onClick={() => goTo(i, i > slide ? 1 : -1)}
-                  className={`relative h-[52px] flex-1 overflow-hidden transition-all duration-300 ${
-                    i === slide ? "ring-1 ring-[#d4e6f4] opacity-100" : "opacity-40 hover:opacity-65"
-                  }`}
-                >
-                  <img src={ev.img} alt={ev.title} className="w-full h-full object-cover" />
-                  {i === slide && (
-                    <div className="absolute inset-0 bg-[#d4e6f4]/10" />
-                  )}
-                </button>
-              ))}
-            </div>
-
-            {/* Current slide info */}
-            <div className="flex-1 min-w-0 hidden md:block">
-              <AnimatePresence mode="wait">
+          {/* Right image card slider block */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center w-full">
+            <motion.div
+              className="relative w-full aspect-[3/4] max-w-[360px] overflow-hidden rounded-sm ring-1 ring-white/10 bg-[#0D0D0D] shadow-[0_20px_50px_rgba(0,0,0,0.8)] group"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.35, duration: 0.8 }}
+            >
+              <AnimatePresence custom={dir} initial={false}>
                 <motion.div
                   key={slide}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.3 }}
+                  custom={dir}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.75, ease: [0.32, 0.72, 0, 1] }}
+                  className="absolute inset-0"
                 >
-                  <p className="text-[9px] tracking-[0.3em] text-[#85bde2] uppercase mb-0.5">{EVENT_SLIDES[slide].tag}</p>
-                  <p className="text-sm font-semibold text-white truncate">{EVENT_SLIDES[slide].title}</p>
+                  <img
+                    src={EVENT_SLIDES[slide].img}
+                    alt={EVENT_SLIDES[slide].title}
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-[1200ms] ease-out"
+                  />
+                  {/* Subtle vignette */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/95 via-[#050505]/10 to-transparent" />
                 </motion.div>
               </AnimatePresence>
-            </div>
 
-            {/* Arrows + counter */}
-            <div className="flex items-center gap-3 ml-auto">
-              <span className="text-[10px] text-[#717182] tracking-widest">
-                {String(slide + 1).padStart(2, "0")} / {String(EVENT_SLIDES.length).padStart(2, "0")}
-              </span>
-              <button
-                onClick={prev}
-                className="w-8 h-8 border border-white/[0.12] flex items-center justify-center text-[#A1A1AA] hover:border-white/30 hover:text-white transition-all"
-              >
-                <ChevronLeft size={15} />
-              </button>
-              <button
-                onClick={next}
-                className="w-8 h-8 border border-white/[0.12] flex items-center justify-center text-[#A1A1AA] hover:border-white/30 hover:text-white transition-all"
-              >
-                <ChevronRight size={15} />
-              </button>
-            </div>
-          </div>
+              {/* Slider overlay info */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={slide}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <p className="text-[8px] tracking-[0.3em] text-[#85bde2] uppercase font-bold mb-1">
+                      {EVENT_SLIDES[slide].tag}
+                    </p>
+                    <h3 className="text-base font-bold text-white leading-tight truncate">
+                      {EVENT_SLIDES[slide].title}
+                    </h3>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
 
-          {/* Progress bar */}
-          <div className="h-[2px] bg-white/[0.06]">
-            <motion.div
-              className="h-full bg-[#d4e6f4]"
-              key={slide}
-              initial={{ width: "0%" }}
-              animate={{ width: "100%" }}
-              transition={{ duration: 5, ease: "linear" }}
-            />
+              {/* Slider controls in card */}
+              <div className="absolute top-4 right-4 z-20 flex gap-2">
+                <button
+                  onClick={prev}
+                  className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white hover:bg-black/80 border border-white/5 transition-all cursor-pointer"
+                >
+                  <ChevronLeft size={14} />
+                </button>
+                <button
+                  onClick={next}
+                  className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white hover:bg-black/80 border border-white/5 transition-all cursor-pointer"
+                >
+                  <ChevronRight size={14} />
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Slide Dots / Indicators */}
+            <div className="flex gap-2.5 mt-5">
+              {EVENT_SLIDES.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => goTo(idx, idx > slide ? 1 : -1)}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    idx === slide ? "w-6 bg-[#85bde2]" : "w-1.5 bg-white/20 hover:bg-white/40"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Scroll cue */}
-      <div className="absolute bottom-32 right-8 hidden lg:flex flex-col items-center gap-2 text-[#717182]">
+      <div className="absolute bottom-10 right-8 hidden lg:flex flex-col items-center gap-2 text-[#717182]">
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
@@ -755,7 +749,7 @@ function Excellence() {
 }
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
-function Dashboard() {
+function Dashboard({ onApply }: { onApply: () => void }) {
   const metrics = [
     { label: "Active Members", value: "84", delta: "+12 this cycle", icon: Users, color: STEEL },
     { label: "Events Conducted", value: "52", delta: "This academic year", icon: Calendar, color: SILVER },
@@ -803,8 +797,8 @@ function Dashboard() {
             </div>
           </div>
           <button
-            onClick={() => scrollTo("join")}
-            className="group flex items-center gap-2.5 px-8 py-4 bg-[#d4e6f4] text-[#050505] text-[11px] font-bold tracking-[0.18em] uppercase hover:bg-white transition-all whitespace-nowrap"
+            onClick={onApply}
+            className="group flex items-center gap-2.5 px-8 py-4 bg-[#d4e6f4] text-[#050505] text-[11px] font-bold tracking-[0.18em] uppercase hover:bg-white transition-all whitespace-nowrap cursor-pointer shadow-[0_0_25px_rgba(133,189,226,0.15)] hover:shadow-[0_0_35px_rgba(133,189,226,0.25)]"
           >
             Apply Now <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
           </button>
@@ -1159,7 +1153,7 @@ function Network() {
 }
 
 // ─── Recruitment ──────────────────────────────────────────────────────────────
-function Recruitment() {
+function Recruitment({ onApply }: { onApply: () => void }) {
   const steps = [
     { n: "01", title: "Application", desc: "Submit your profile, interests, and a written response." },
     { n: "02", title: "Case Evaluation", desc: "A real marketing case — no textbook answers accepted." },
@@ -1211,8 +1205,8 @@ function Recruitment() {
             </p>
           </div>
           <button
-            onClick={() => window.location.href = "mailto:prominent@college.edu"}
-            className="group flex items-center gap-3 px-9 py-4 bg-[#d4e6f4] text-[#050505] text-[11px] font-black tracking-[0.2em] uppercase hover:bg-white transition-all whitespace-nowrap"
+            onClick={onApply}
+            className="group flex items-center gap-3 px-9 py-4 bg-[#d4e6f4] text-[#050505] text-[11px] font-black tracking-[0.2em] uppercase hover:bg-white transition-all whitespace-nowrap cursor-pointer shadow-[0_0_25px_rgba(133,189,226,0.15)] hover:shadow-[0_0_35px_rgba(133,189,226,0.25)]"
           >
             Apply Now <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
           </button>
@@ -1297,16 +1291,343 @@ function Footer() {
   );
 }
 
+// ─── Glance/Gallery Section ───────────────────────────────────────────────────
+function Gallery() {
+  const [filter, setFilter] = useState("all");
+  const [lightboxItem, setLightboxItem] = useState<{ type: "img" | "video"; src: string; title: string } | null>(null);
+
+  const galleryItems = [
+    { type: "img", src: image0, cat: "cohort", title: "PROMINENT Cohort Group", desc: "The core members of PROMINENT AY 2026-27 cohort." },
+    { type: "img", src: image1, cat: "events", title: "Industry Connect Series", desc: "Interactive panel session with CXO executives." },
+    { type: "img", src: image2, cat: "leadership", title: "Presidential Investiture", desc: "President Dev N Suman receiving the collegiate marketing award." },
+    { type: "img", src: image3, cat: "events", title: "Case Competition Conclave", desc: "Winning podium at the national marketing competition." },
+    { type: "img", src: image4, cat: "cohort", title: "Marketing Conclave Presentation", desc: "Team photo showcase for the annual general assembly." },
+    // Mock video item
+    {
+      type: "video",
+      src: "https://assets.mixkit.co/videos/preview/mixkit-business-team-having-a-meeting-in-office-43187-large.mp4",
+      cat: "videos",
+      title: "PROMINENT Annual Summit Aftermovie",
+      desc: "Highlight reels and keynote highlights from our flagship event."
+    }
+  ];
+
+  const filteredItems = filter === "all" ? galleryItems : galleryItems.filter(item => item.cat === filter);
+
+  return (
+    <section id="gallery" className="bg-[#050505] py-28 lg:py-36 border-t border-white/[0.06]">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        <SectionHead
+          eyebrow="Glance & Gallery"
+          title={<>PROMINENT<br />At a Glance</>}
+          sub="Explore the visual legacy of our campus activities, national achievements, and student events."
+        />
+
+        {/* Filter Tabs */}
+        <div className="flex gap-2 mb-10 overflow-x-auto pb-2 scrollbar-hide">
+          {["all", "events", "cohort", "leadership", "videos"].map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setFilter(cat)}
+              className={`px-5 py-2 text-xs font-bold tracking-wider uppercase transition-all whitespace-nowrap rounded-sm cursor-pointer ${
+                filter === cat
+                  ? "bg-[#85bde2] text-[#050505]"
+                  : "border border-white/[0.08] text-[#A1A1AA] hover:border-white/20 hover:text-white"
+              }`}
+            >
+              {cat === "all" ? "All Media" : cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Gallery Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredItems.map((item, i) => (
+            <motion.div
+              key={item.title}
+              className="group relative aspect-[4/3] overflow-hidden rounded-sm ring-1 ring-white/10 bg-[#0D0D0D] cursor-pointer hover:shadow-[0_15px_30px_rgba(133,189,226,0.06)] border border-white/[0.02] hover:border-[#85bde2]/20 transition-all duration-500"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08, duration: 0.5 }}
+              viewport={{ once: true }}
+              onClick={() => setLightboxItem({ type: item.type as "img" | "video", src: item.src, title: item.title })}
+            >
+              {item.type === "img" ? (
+                <img src={item.src} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              ) : (
+                <div className="w-full h-full relative">
+                  <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center group-hover:scale-110 group-hover:bg-[#85bde2]/20 transition-all">
+                      <Play size={16} className="text-white group-hover:text-[#85bde2] transition-colors ml-0.5" />
+                    </div>
+                  </div>
+                  {/* Mock thumbnail (using image0 as video bg) */}
+                  <img src={image0} alt={item.title} className="w-full h-full object-cover filter blur-[1px]" />
+                </div>
+              )}
+              {/* Overlay content on hover */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5 z-20">
+                <span className="text-[8px] tracking-[0.2em] text-[#85bde2] uppercase font-bold mb-1">{item.cat}</span>
+                <h4 className="text-sm font-bold text-white mb-1">{item.title}</h4>
+                <p className="text-[10px] text-[#A1A1AA] leading-relaxed line-clamp-2">{item.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {lightboxItem && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setLightboxItem(null)}
+          >
+            <button
+              className="absolute top-5 right-5 text-white/60 hover:text-white cursor-pointer z-50 bg-black/40 p-2 rounded-full"
+              onClick={() => setLightboxItem(null)}
+            >
+              <X size={20} />
+            </button>
+            <motion.div
+              className="relative max-w-4xl w-full max-h-[85vh] flex flex-col items-center"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 220 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="w-full overflow-hidden rounded-sm ring-1 ring-white/10 bg-[#0D0D0D] flex items-center justify-center">
+                {lightboxItem.type === "img" ? (
+                  <img src={lightboxItem.src} alt={lightboxItem.title} className="max-h-[75vh] w-auto object-contain" />
+                ) : (
+                  <video src={lightboxItem.src} controls autoPlay className="max-h-[75vh] w-full object-contain" />
+                )}
+              </div>
+              <p className="text-sm font-medium text-white mt-3">{lightboxItem.title}</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
+
+// ─── Apply Modal Form ──────────────────────────────────────────────────────────
+function ApplyModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [department, setDepartment] = useState("");
+  const [sop, setSop] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const isPlaceholder = (import.meta.env.VITE_SUPABASE_URL as string || "").includes("placeholder");
+      
+      if (isPlaceholder) {
+        // Local simulation fallback
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+        setSuccess(true);
+        setLoading(false);
+        return;
+      }
+
+      const { error: dbError } = await supabase.from("submissions").insert([
+        {
+          full_name: fullName,
+          email,
+          phone,
+          department,
+          statement_of_purpose: sop,
+          linkedin_url: linkedin,
+          applied_at: new Date().toISOString()
+        }
+      ]);
+
+      if (dbError) throw dbError;
+
+      setSuccess(true);
+    } catch (err: any) {
+      console.error(err);
+      setError(err?.message || "Something went wrong. Please check your Supabase credentials or try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+        >
+          <motion.div
+            className="relative w-full max-w-xl bg-[#0D0D0D] border border-white/[0.08] p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.85)] overflow-hidden rounded-sm"
+            initial={{ scale: 0.94, y: 10, opacity: 0 }}
+            animate={{ scale: 1, y: 0, opacity: 1 }}
+            exit={{ scale: 0.94, y: 10, opacity: 0 }}
+            transition={{ type: "spring", damping: 25, stiffness: 220 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Background pattern */}
+            <div className="absolute top-0 right-0 w-24 h-24 bg-[#85bde2]/5 rounded-full filter blur-2xl pointer-events-none" />
+            <button
+              className="absolute top-4 right-4 text-white/50 hover:text-white cursor-pointer p-1"
+              onClick={onClose}
+            >
+              <X size={18} />
+            </button>
+
+            {!success ? (
+              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                <div>
+                  <h3 className="text-xl font-black text-white tracking-tight mb-1.5 uppercase">Apply for PROMINENT</h3>
+                  <p className="text-xs text-[#A1A1AA] leading-relaxed">
+                    Batch 2026–27 cohort. Enter your details below. Your submission will be securely saved.
+                  </p>
+                </div>
+
+                {error && (
+                  <div className="p-3 bg-red-950/40 border border-red-500/20 text-red-200 text-xs leading-relaxed">
+                    {error}
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] text-[#A1A1AA] uppercase tracking-wider font-semibold">Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. John Doe"
+                      className="px-3.5 py-2.5 bg-[#050505] border border-white/[0.08] text-sm text-white focus:outline-none focus:border-[#85bde2] transition-colors rounded-sm"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] text-[#A1A1AA] uppercase tracking-wider font-semibold">Email Address</label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="e.g. john@example.com"
+                      className="px-3.5 py-2.5 bg-[#050505] border border-white/[0.08] text-sm text-white focus:outline-none focus:border-[#85bde2] transition-colors rounded-sm"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] text-[#A1A1AA] uppercase tracking-wider font-semibold">Phone Number</label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="e.g. +91 9876543210"
+                      className="px-3.5 py-2.5 bg-[#050505] border border-white/[0.08] text-sm text-white focus:outline-none focus:border-[#85bde2] transition-colors rounded-sm"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] text-[#A1A1AA] uppercase tracking-wider font-semibold">Department & Year</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. BBA Marketing, 2nd Year"
+                      className="px-3.5 py-2.5 bg-[#050505] border border-white/[0.08] text-sm text-white focus:outline-none focus:border-[#85bde2] transition-colors rounded-sm"
+                      value={department}
+                      onChange={(e) => setDepartment(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] text-[#A1A1AA] uppercase tracking-wider font-semibold">LinkedIn Profile URL</label>
+                  <input
+                    type="url"
+                    placeholder="https://linkedin.com/in/username"
+                    className="px-3.5 py-2.5 bg-[#050505] border border-white/[0.08] text-sm text-white focus:outline-none focus:border-[#85bde2] transition-colors rounded-sm"
+                    value={linkedin}
+                    onChange={(e) => setLinkedin(e.target.value)}
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] text-[#A1A1AA] uppercase tracking-wider font-semibold">Why do you want to join PROMINENT?</label>
+                  <textarea
+                    required
+                    rows={4}
+                    placeholder="Write a brief statement about your interests and motivation..."
+                    className="px-3.5 py-2.5 bg-[#050505] border border-white/[0.08] text-sm text-white focus:outline-none focus:border-[#85bde2] transition-colors resize-none rounded-sm"
+                    value={sop}
+                    onChange={(e) => setSop(e.target.value)}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-4 mt-2 bg-[#85bde2] text-[#050505] text-xs font-bold tracking-[0.2em] uppercase hover:bg-white transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(133,189,226,0.15)] disabled:opacity-50"
+                >
+                  {loading ? "Submitting Application..." : "Submit Application"}
+                  {!loading && <ArrowRight size={12} />}
+                </button>
+              </form>
+            ) : (
+              <div className="text-center py-10 flex flex-col items-center gap-5">
+                <div className="w-16 h-16 rounded-full bg-[#85bde2]/10 border border-[#85bde2]/30 flex items-center justify-center mb-2">
+                  <Award size={28} className="text-[#85bde2] animate-bounce" />
+                </div>
+                <h3 className="text-2xl font-black text-white tracking-tight uppercase">Application Submitted</h3>
+                <p className="text-sm text-[#A1A1AA] leading-relaxed max-w-sm">
+                  Thank you for applying to PROMINENT Batch 2026–27. Your response has been securely saved to the database. We will review your profile and contact you soon.
+                </p>
+                <button
+                  onClick={onClose}
+                  className="px-8 py-3 bg-[#d4e6f4] text-[#050505] text-[10px] font-bold tracking-widest uppercase hover:bg-white transition-colors cursor-pointer mt-4"
+                >
+                  Close
+                </button>
+              </div>
+            )}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 // ─── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
   const [splashDone, setSplashDone] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showApplyModal, setShowApplyModal] = useState(false);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
   }, []);
+
+  const handleApply = () => setShowApplyModal(true);
 
   return (
     <div className="min-h-screen bg-[#050505] text-white" style={{ fontFamily: "Inter,sans-serif" }}>
@@ -1316,21 +1637,25 @@ export default function App() {
 
       {splashDone && (
         <>
-          <Nav scrolled={scrolled} />
-          <Hero />
+          <Nav scrolled={scrolled} onApply={handleApply} />
+          <Hero onApply={handleApply} />
           <StatsStrip />
           <About />
           <Events />
+          <Gallery />
           <Excellence />
-          <Dashboard />
+          <Dashboard onApply={handleApply} />
           <Transformation />
           <Legacy />
           <Board />
           <Speakers />
           <Network />
-          <Recruitment />
+          <Recruitment onApply={handleApply} />
           <Sponsors />
           <Footer />
+
+          {/* Modal popup form */}
+          <ApplyModal open={showApplyModal} onClose={() => setShowApplyModal(false)} />
         </>
       )}
     </div>
