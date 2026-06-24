@@ -52,7 +52,7 @@ const EVENT_SLIDES = [
   },
   {
     img: image1,
-    title: "Team Cohort 2025–26",
+    title: "Team Cohort 2026–27",
     tag: "Community",
     desc: "84 driven members. One mission — to build the next generation of marketing leaders.",
   },
@@ -362,7 +362,7 @@ function Hero() {
             </motion.div>
 
             <motion.h1
-              className="text-[clamp(52px,8vw,88px)] font-black text-white leading-[0.95] tracking-[-0.03em] mb-6"
+              className="text-[clamp(52px,8vw,88px)] font-black leading-[0.95] tracking-[-0.03em] mb-6 bg-gradient-to-r from-white via-[#d4e6f4] to-[#85bde2] bg-clip-text text-transparent"
               style={{ fontFamily: "Inter,sans-serif" }}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -593,15 +593,15 @@ function About() {
           <div className="aspect-[3/4] max-w-sm ml-auto overflow-hidden ring-1 ring-white/10 rounded-sm">
             <img
               src={image2}
-              alt="Dev N Sumna - President"
+              alt="Dev N Suman - President"
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/80 via-transparent to-transparent" />
           </div>
           <div className="absolute -bottom-5 -left-5 border border-white/[0.08] bg-[#0D0D0D] p-5 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
             <p className="text-xs text-[#A1A1AA] tracking-widest uppercase mb-1">Current Leadership</p>
-            <p className="text-base font-bold text-white">Dev N Sumna</p>
-            <p className="text-xs text-[#85bde2]">President, AY 2025–26</p>
+            <p className="text-base font-bold text-white">Dev N Suman</p>
+            <p className="text-xs text-[#85bde2]">President, AY 2026–27</p>
           </div>
         </div>
       </div>
@@ -770,7 +770,7 @@ function Dashboard() {
           <SectionHead eyebrow="Operations" title={<>Live Club<br />Dashboard</>} />
           <div className="flex items-center gap-2 text-[10px] text-[#A1A1AA] tracking-[0.2em] uppercase mb-14">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            Updated 2025–26
+            Updated 2026–27
           </div>
         </div>
 
@@ -788,7 +788,7 @@ function Dashboard() {
         <div className="bg-[#080808] border border-white/[0.06] p-7 flex flex-col md:flex-row items-center gap-8">
           <div className="flex-1">
             <p className="text-[10px] text-[#A1A1AA] tracking-[0.2em] uppercase mb-1">Recruitment Status</p>
-            <p className="text-xl font-bold text-white mb-4">Open — AY 2025–26</p>
+            <p className="text-xl font-bold text-white mb-4">Open — AY 2026–27</p>
             <div className="flex justify-between text-[10px] text-[#A1A1AA] mb-2 max-w-sm">
               <span>Applications received</span><span>480 / 500</span>
             </div>
@@ -877,15 +877,15 @@ function Transformation() {
 
 // ─── Legacy ───────────────────────────────────────────────────────────────────
 function Legacy() {
-  const [active, setActive] = useState(2025);
+  const [active, setActive] = useState(2026);
   const years = [2021, 2022, 2023, 2024, 2025, 2026];
   const data: Record<number, { event: string; win: string; president: string; desc: string }> = {
     2021: { event: "PROMINENT Launch — Founding Chapter", win: "Collegiate Brand Summit — 2nd Place", president: "Arjun Sharma", desc: "The year it all began. Founded with 18 members, a bold vision, and zero precedent." },
     2022: { event: "Marketing Masterclass Series (8 sessions)", win: "National Admania — 1st Place", president: "Isha Gupta", desc: "First major competition win. Proven we could compete at the national level." },
     2023: { event: "Annual Marketing Summit v1 — 600+ attendees", win: "B-School Marketing League — Champions", president: "Rahul Nair", desc: "The flagship event launched. 600 attendees. 8 industry speakers. Zero compromise." },
     2024: { event: "PROMINENT × IIM Indore Joint Workshop", win: "National Case Competition — Gold", president: "Priya Verma", desc: "Crossed institutional boundaries. Partnered with India's premier management institutes." },
-    2025: { event: "Industry Connect Series — 12 CXO Sessions", win: "Marketing Innovation Award — Runner-Up", president: "Dev N Sumna", desc: "84 members. 12 CXO sessions. The most operationally intensive year in PROMINENT history." },
-    2026: { event: "Digital Marketing Conclave (ongoing)", win: "—", president: "Dev N Sumna", desc: "The next chapter is being written. Watch this space." },
+    2025: { event: "Industry Connect Series — 12 CXO Sessions", win: "Marketing Innovation Award — Runner-Up", president: "Dev N Suman", desc: "84 members. 12 CXO sessions. The most operationally intensive year in PROMINENT history." },
+    2026: { event: "Digital Marketing Conclave (ongoing)", win: "—", president: "Dev N Suman", desc: "Dev N Suman takes office. Re-imagining digital boundaries, launching new brand incubators, and expanding corporate partnerships." },
   };
 
   return (
@@ -948,7 +948,7 @@ function Legacy() {
 // ─── Board ────────────────────────────────────────────────────────────────────
 function Board() {
   const leadership = [
-    { role: "President", name: "Dev N Sumna", dept: "Executive Leadership" },
+    { role: "President", name: "Dev N Suman", dept: "Executive Leadership" },
     { role: "Vice President", name: "Sunidhi Sharma", dept: "Operations & Strategy" },
   ];
   const directors = [
@@ -965,23 +965,66 @@ function Board() {
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <SectionHead
           eyebrow="Leadership"
-          title={<>Executive Board<br />2025–26</>}
+          title={<>Executive Board<br />2026–27</>}
           sub="The team that drives PROMINENT forward — elected for merit, accountable for output."
         />
+
+        {/* Widescreen Team/Cohort Banner */}
+        <motion.div
+          className="mb-10 relative group overflow-hidden border border-white/[0.08] bg-[#0A0A0A] shadow-[0_10px_45px_rgba(0,0,0,0.85)]"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true }}
+        >
+          <div className="aspect-[21/9] md:aspect-[3/1] overflow-hidden relative">
+            <img
+              src={image0}
+              alt="PROMINENT Team 2026–27"
+              className="w-full h-full object-cover object-[center_35%] group-hover:scale-[1.02] transition-transform duration-[1200ms] ease-out"
+            />
+            {/* Dark gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/45 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/80 via-[#050505]/20 to-transparent" />
+          </div>
+          
+          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="max-w-xl">
+              <div className="flex items-center gap-2 mb-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#85bde2] animate-pulse" />
+                <span className="text-[9px] tracking-[0.3em] text-[#85bde2] uppercase font-bold">The Cohort</span>
+              </div>
+              <h3 className="text-xl md:text-3xl font-black text-white leading-tight mb-2 tracking-tight">
+                PROMINENT Team 2026–27
+              </h3>
+              <p className="text-xs md:text-sm text-[#A1A1AA] leading-relaxed">
+                84 driven members representing a culture of rigor, collaboration, and high performance — trained for corporate readiness and marketing leadership.
+              </p>
+            </div>
+            <div className="flex items-center gap-3 shrink-0">
+              <span className="text-[10px] tracking-[0.2em] uppercase text-[#717182] border border-white/10 px-4 py-2 bg-white/[0.02] backdrop-blur-sm">
+                Estd. 2021
+              </span>
+              <span className="text-[10px] tracking-[0.2em] uppercase text-[#85bde2] border border-[#85bde2]/30 px-4 py-2 bg-[#85bde2]/5 font-bold backdrop-blur-sm">
+                Batch 2026–27
+              </span>
+            </div>
+          </div>
+        </motion.div>
 
         {/* Top 2 leadership */}
         <div className="grid md:grid-cols-2 gap-px bg-white/[0.06] mb-px">
           {leadership.map((l, i) => (
             <motion.div
               key={l.name}
-              className="bg-[#0D0D0D] p-10 flex items-center gap-6 group hover:bg-[#111111] transition-colors"
+              className="bg-[#0D0D0D] p-10 flex items-center gap-6 group hover:bg-[#0F0F12] border border-white/[0.04] hover:border-[#85bde2]/20 hover:shadow-[0_15px_30px_rgba(133,189,226,0.06)] transition-all duration-500"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
               viewport={{ once: true }}
             >
-              <div className="w-16 h-16 bg-[#1C1C1E] border border-white/10 flex items-center justify-center shrink-0">
-                <span className="text-xl font-black text-[#d4e6f4]">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#1C1C1E] to-[#252528] border border-white/10 group-hover:border-[#85bde2]/30 group-hover:shadow-[0_0_15px_rgba(133,189,226,0.15)] flex items-center justify-center shrink-0 transition-all duration-300">
+                <span className="text-xl font-black text-white group-hover:text-[#85bde2] transition-colors">
                   {l.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
                 </span>
               </div>
@@ -999,14 +1042,14 @@ function Board() {
           {directors.map((d, i) => (
             <motion.div
               key={d.name}
-              className="bg-[#050505] p-7 hover:bg-[#0A0A0A] transition-colors"
+              className="bg-[#050505] p-7 hover:bg-[#09090C] border border-white/[0.02] hover:border-[#85bde2]/15 hover:shadow-[0_10px_25px_rgba(133,189,226,0.04)] group transition-all duration-500"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + i * 0.07, duration: 0.45 }}
               viewport={{ once: true }}
             >
-              <div className="w-10 h-10 bg-[#1C1C1E] flex items-center justify-center mb-5">
-                <span className="text-xs font-bold text-[#A1A1AA]">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#1C1C1E] to-[#252528] border border-white/10 group-hover:border-[#85bde2]/35 flex items-center justify-center mb-5 transition-all duration-300">
+                <span className="text-xs font-bold text-[#A1A1AA] group-hover:text-[#85bde2] transition-colors">
                   {d.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
                 </span>
               </div>
@@ -1162,7 +1205,7 @@ function Recruitment() {
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-[9px] tracking-[0.3em] text-emerald-500 uppercase">Applications Open</span>
             </div>
-            <h3 className="text-2xl font-black text-white mb-2">AY 2025–26 Cohort</h3>
+            <h3 className="text-2xl font-black text-white mb-2">AY 2026–27 Cohort</h3>
             <p className="text-sm text-[#A1A1AA] leading-relaxed max-w-md">
               480 applications received. 20 seats remaining. This is not a deadline you want to miss.
             </p>
