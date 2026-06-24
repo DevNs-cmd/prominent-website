@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+.npm-cache/
+pnpm-lock.yaml
+pnpm-workspace.yaml
+
+# Production Build
+dist/
+
+# Local env files
+.env*.local
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Vite cache
+.vite/
