@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useInView, AnimatePresence } from "motion/react";
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 import prominentLogo from "@/imports/Prominent_Logo.jpeg";
+import ndimLogo from "@/imports/ndim-logo.webp";
 import { supabase } from "@/lib/supabase";
 import image0 from "@/imports/image_0.jpeg";
 import image1 from "@/imports/image_1.jpeg";
@@ -21,13 +22,8 @@ import imgDocHeadd from "@/imports/Documentation Headd.png";
 import {
   ChevronDown, ArrowRight, Menu, X, Award, Users, Calendar,
   TrendingUp, MapPin, Linkedin, Instagram, Twitter, Mail,
-  ChevronLeft, ChevronRight, Play, Quote,
+  ChevronLeft, ChevronRight, Play, Quote, Phone, MessageCircle,
 } from "lucide-react";
-import presidentImg from "@/imports/President.png";
-import vicePresidentImg from "@/imports/Vice President.png";
-import jointSecretaryImg from "@/imports/Joint Secretary.png";
-import secretaryImg from "@/imports/Secretary.png";
-import studentCoordinatorImg from "@/imports/Student Coordinator Head.png";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const SILVER = "#d4e6f4"; // Silver-blue from logo
@@ -82,86 +78,152 @@ function scrollTo(id: string) {
 
 // ─── Splash ───────────────────────────────────────────────────────────────────
 function SplashScreen({ onDone }: { onDone: () => void }) {
+  const [progress, setProgress] = useState(0);
+
   useEffect(() => {
-    const t = setTimeout(onDone, 2600);
-    return () => clearTimeout(t);
+    const start = Date.now();
+    const duration = 2800; // slightly longer for cleaner montage spacing
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - start;
+      const pct = Math.min(100, (elapsed / duration) * 100);
+      setProgress(pct);
+      if (elapsed >= duration) {
+        clearInterval(interval);
+        onDone();
+      }
+    }, 16);
+    return () => clearInterval(interval);
   }, [onDone]);
+
+  const corePics = [
+    imgPresident,
+    imgVicePresident,
+    imgSecretary,
+    imgJointSecretary,
+    imgEventHead,
+    imgSocialMediaHead,
+    imgStudentCoordHead,
+    imgDocHead,
+    imgDocHeadd,
+  ];
+
+  // Determine current image to show based on progress percentage
+  let currentImg = prominentLogo;
+  let currentLabel = "PROMINENT";
+  
+  const step = 85 / corePics.length; // Flashing montage through first 85% of loading progress
+  if (progress < 85) {
+    const idx = Math.floor(progress / step);
+    currentImg = corePics[idx] || prominentLogo;
+    currentLabel = "Core Board Member";
+  } else {
+    currentImg = prominentLogo;
+    currentLabel = "PROMINENT Logo";
+  }
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505] overflow-hidden"
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.7, ease: "easeInOut" }}
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505] overflow-hidden px-6"
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0, filter: "blur(10px)" }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     >
-      {/* Cinematic Background Image reveal */}
-      <motion.div
-        className="absolute inset-0 opacity-[0.16] pointer-events-none"
-        initial={{ scale: 1.12, filter: "blur(2px)" }}
-        animate={{ scale: 1.0, filter: "blur(0px)" }}
-        transition={{ duration: 2.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <img src={image4} alt="Splash Background" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-[#050505]/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]" />
-      </motion.div>
+      {/* Cinematic iOS Aurora Background */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-[#85bde2] opacity-[0.06] filter blur-[80px]"
+          animate={{
+            scale: [1, 1.25, 1],
+            opacity: [0.06, 0.1, 0.06]
+          }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] rounded-full bg-[#2D4A77] opacity-[0.05] filter blur-[60px]"
+          animate={{
+            scale: [1.2, 0.9, 1.2],
+            opacity: [0.05, 0.08, 0.05]
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+        />
+      </div>
 
-      {/* Brand-color matched Blueprint Grid */}
-      <svg className="absolute inset-0 w-full h-full opacity-[0.05]" xmlns="http://www.w3.org/2000/svg">
+      {/* Grid Pattern overlay */}
+      <svg className="absolute inset-0 w-full h-full opacity-[0.03] pointer-events-none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
-            <path d="M 64 0 L 0 0 0 64" fill="none" stroke="#85bde2" strokeWidth="0.5" />
+          <pattern id="splash-grid" width="56" height="56" patternUnits="userSpaceOnUse">
+            <path d="M 56 0 L 0 0 0 56" fill="none" stroke="#85bde2" strokeWidth="0.5" />
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#grid)" />
+        <rect width="100%" height="100%" fill="url(#splash-grid)" />
       </svg>
 
-      <motion.div
-        className="flex flex-col items-center gap-5 relative z-10"
-        initial={{ opacity: 0, scale: 0.88 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      >
+      {/* Container */}
+      <div className="flex flex-col items-center relative z-10 w-full max-w-sm">
+        {/* iOS Glass Squircle Logo Wrapper */}
         <motion.div
-          className="w-24 h-24 rounded-full overflow-hidden ring-1 ring-white/15 shadow-[0_0_30px_rgba(133,189,226,0.15)]"
-          initial={{ rotate: -8, opacity: 0 }}
-          animate={{ rotate: 0, opacity: 1 }}
-          transition={{ delay: 0.15, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="w-24 h-24 sm:w-28 sm:h-28 p-0.5 rounded-[26px] sm:rounded-[32px] bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.2)] overflow-hidden flex items-center justify-center mb-6"
+          initial={{ opacity: 0, scale: 0.8, y: 15 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <ImageWithFallback src={prominentLogo} alt="PROMINENT" className="w-full h-full object-cover" />
+          <div className="w-full h-full rounded-[24px] sm:rounded-[30px] overflow-hidden relative bg-black/40">
+            <AnimatePresence mode="popLayout">
+              <motion.img
+                key={currentImg}
+                src={currentImg}
+                alt={currentLabel}
+                className="w-full h-full object-cover"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+              />
+            </AnimatePresence>
+          </div>
         </motion.div>
 
+        {/* Brand Text */}
         <motion.div
-          className="text-center"
-          initial={{ opacity: 0, y: 16 }}
+          className="text-center mb-8 px-4"
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.7 }}
+          transition={{ delay: 0.2, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="text-[36px] font-black tracking-[0.28em] bg-gradient-to-r from-[#d4e6f4] via-[#85bde2] to-[#85bde2] bg-clip-text text-transparent" style={{ fontFamily: "Inter,sans-serif" }}>
+          <h1 className="text-[28px] sm:text-[32px] font-black tracking-[0.3em] bg-gradient-to-r from-white via-[#d4e6f4] to-[#85bde2] bg-clip-text text-transparent uppercase leading-none mb-2.5" style={{ fontFamily: "Inter, sans-serif" }}>
             PROMINENT
-          </p>
-          <p className="text-[10px] tracking-[0.45em] text-[#A1A1AA] mt-1.5 uppercase">The Marketing Club</p>
+          </h1>
+          <p className="text-[8px] sm:text-[9px] tracking-[0.35em] sm:tracking-[0.45em] text-[#717182] uppercase font-bold truncate">The Marketing Club of NDIM</p>
         </motion.div>
 
-        <motion.div
-          className="h-[1px] bg-gradient-to-r from-transparent via-[#85bde2] to-transparent"
-          initial={{ width: 0, opacity: 0 }}
-          animate={{ width: 200, opacity: 1 }}
-          transition={{ delay: 0.9, duration: 0.9, ease: "easeOut" }}
-        />
-
-        <motion.p
-          className="text-[9px] tracking-[0.4em] text-[#717182] uppercase"
+        {/* iOS-Style Thin Progress Bar */}
+        <motion.div 
+          className="w-32 sm:w-36 h-[2px] bg-white/[0.08] rounded-full overflow-hidden relative mb-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.4, duration: 0.5 }}
+          transition={{ delay: 0.4 }}
+        >
+          <motion.div 
+            className="h-full bg-gradient-to-r from-[#d4e6f4] via-[#85bde2] to-[#85bde2] shadow-[0_0_8px_rgba(133,189,226,0.5)] animate-pulse" 
+            style={{ width: `${progress}%` }}
+            transition={{ ease: "easeOut" }}
+          />
+        </motion.div>
+
+        {/* Subtext */}
+        <motion.p
+          className="text-[8px] tracking-[0.3em] sm:tracking-[0.35em] text-[#A1A1AA]/50 uppercase font-medium"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
         >
           Authority · Leadership · Legacy
         </motion.p>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }
+
 
 // ─── Nav ──────────────────────────────────────────────────────────────────────
 const NAV_LINKS = [
@@ -208,6 +270,10 @@ function Nav({ scrolled, onApply }: { scrolled: boolean; onApply: () => void }) 
             <ImageWithFallback src={prominentLogo} alt="PROMINENT" className="w-full h-full object-cover" />
           </div>
           <span className="text-[10px] font-black tracking-[0.25em] text-white uppercase">Prominent</span>
+          {/* NDIM college logo */}
+          <div className="hidden sm:flex items-center gap-1.5 ml-2 pl-2.5 border-l border-white/10">
+            <img src={ndimLogo} alt="NDIM" className="h-5 w-auto opacity-60 hover:opacity-90 transition-opacity" />
+          </div>
         </button>
 
         <nav className="hidden md:flex items-center gap-7">
@@ -316,7 +382,7 @@ function Hero({ onApply }: { onApply: () => void }) {
   }, []);
 
   return (
-    <section id="hero" className="relative min-h-screen flex flex-col bg-[#050505] overflow-hidden pt-[68px]">
+    <section id="hero" className="relative min-h-screen flex flex-col bg-[#050505] overflow-hidden pt-[82px]">
       {/* Fullscreen sliding background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <AnimatePresence initial={false}>
@@ -371,40 +437,39 @@ function Hero({ onApply }: { onApply: () => void }) {
           </motion.div>
 
           <motion.h1
-            className="text-[clamp(44px,7vw,80px)] font-black leading-[0.95] tracking-[-0.03em] mb-5 bg-gradient-to-r from-white via-[#d4e6f4] to-[#85bde2] bg-clip-text text-transparent uppercase"
+            className="text-[clamp(44px,8vw,92px)] font-black leading-[0.9] tracking-[-0.04em] mb-4 bg-gradient-to-r from-white via-white via-[#d4e6f4] to-[#85bde2] bg-clip-text text-transparent uppercase drop-shadow-[0_4px_24px_rgba(133,189,226,0.25)]"
             style={{ fontFamily: "Inter,sans-serif" }}
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ delay: 0.25, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             PROMINENT
           </motion.h1>
 
           <motion.p
-            className="text-base lg:text-lg text-[#E4E4E7] font-light mb-4 leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+            className="text-sm lg:text-base text-[#D4D4D8] font-light mb-6 leading-snug tracking-wide"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.6 }}
           >
-            Building Future{" "}
-            <span className="text-white font-medium">Marketing Leaders</span>
+            Building the Next Generation of <span className="text-white font-semibold">Marketing Leaders</span>
           </motion.p>
 
           <motion.div
-            className="h-10 flex items-center mb-8"
+            className="h-10 flex items-center mb-8 gap-2.5"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.45 }}
           >
+            <span className="text-[10px] tracking-[0.25em] text-[#717182] uppercase font-bold">Driven by</span>
             <AnimatePresence mode="wait">
               <motion.span
                 key={wIdx}
-                className="text-xl lg:text-2xl text-[#85bde2] font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
-                style={{ fontFamily: "'Playfair Display',serif", fontStyle: "italic" }}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.35 }}
+                className="text-[10px] tracking-[0.2em] text-[#85bde2] font-black uppercase bg-[#85bde2]/10 border border-[#85bde2]/15 px-3.5 py-1 rounded-[10px]"
+                initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -6, scale: 0.95 }}
+                transition={{ duration: 0.3 }}
               >
                 {words[wIdx]}
               </motion.span>
@@ -419,14 +484,14 @@ function Hero({ onApply }: { onApply: () => void }) {
           >
             <button
               onClick={onApply}
-              className="group flex items-center gap-2.5 px-7 py-3.5 bg-white text-black text-[11px] font-black tracking-[0.18em] uppercase rounded-full hover:bg-[#85bde2] transition-all duration-200 shadow-[0_4px_16px_rgba(255,255,255,0.15)] cursor-pointer"
+              className="group flex items-center gap-2 px-6.5 py-3.5 bg-white text-black text-[9px] font-black tracking-[0.2em] uppercase rounded-[14px] hover:bg-[#85bde2] transition-all duration-300 shadow-[0_8px_30px_rgba(255,255,255,0.12)] hover:shadow-[0_12px_35px_rgba(133,189,226,0.3)] active:scale-95 cursor-pointer"
             >
               Apply Now
-              <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+              <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
             </button>
             <button
               onClick={() => scrollTo("events")}
-              className="flex items-center gap-2.5 px-7 py-3.5 border border-white/20 bg-white/10 backdrop-blur-md text-white text-[11px] font-black tracking-[0.18em] uppercase rounded-full hover:bg-white/20 hover:border-white/40 transition-all duration-200 cursor-pointer"
+              className="flex items-center gap-2 px-6.5 py-3.5 border border-white/10 bg-[#1C1C1E]/60 backdrop-blur-md text-white text-[9px] font-black tracking-[0.2em] uppercase rounded-[14px] hover:bg-[#1C1C1E]/95 hover:border-white/20 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] active:scale-95 cursor-pointer"
             >
               Explore Events
             </button>
@@ -584,7 +649,7 @@ function About() {
   }, [coreTeam.length]);
 
   return (
-    <section id="about" className="relative bg-[#050505] py-28 lg:py-36 overflow-hidden">
+    <section id="about" className="relative bg-transparent py-28 lg:py-36 overflow-hidden z-10">
       {/* Background ambient lighting */}
       <div className="absolute top-[20%] right-[-10%] w-[45vw] h-[45vw] bg-[#85bde2] rounded-full filter blur-[150px] opacity-[0.03] pointer-events-none" />
       <div className="absolute bottom-[10%] left-[-10%] w-[35vw] h-[35vw] bg-[#2D4A77] rounded-full filter blur-[130px] opacity-[0.02] pointer-events-none" />
@@ -670,7 +735,7 @@ function Events() {
   const [active, setActive] = useState(0);
 
   return (
-    <section id="events" className="relative bg-gradient-to-b from-[#050505] to-[#0A0A0A] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+    <section id="events" className="relative bg-transparent py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden z-10">
       {/* Background ambient lighting */}
       <div className="absolute bottom-[10%] right-[-10%] w-[35vw] h-[35vw] bg-[#85bde2]/5 rounded-full filter blur-[120px] pointer-events-none" />
 
@@ -769,7 +834,7 @@ function Excellence() {
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="relative bg-gradient-to-b from-[#0A0A0A] via-[#050505] to-[#0A0A0A] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+    <section className="relative bg-transparent py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden z-10">
       {/* Ambient background lighting */}
       <div className="absolute top-[30%] left-[-15%] w-[45vw] h-[45vw] bg-[#2D4A77]/5 rounded-full filter blur-[150px] pointer-events-none" />
       <div className="absolute bottom-[20%] right-[-15%] w-[40vw] h-[40vw] bg-[#85bde2]/3 rounded-full filter blur-[130px] pointer-events-none" />
@@ -836,7 +901,7 @@ function Dashboard({ onApply }: { onApply: () => void }) {
   ];
 
   return (
-    <section className="relative bg-gradient-to-b from-[#0A0A0A] to-[#050505] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+    <section className="relative bg-transparent py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden z-10">
       {/* Background ambient lighting */}
       <div className="absolute top-[20%] right-[-10%] w-[35vw] h-[35vw] bg-[#85bde2]/3 rounded-full filter blur-[130px] pointer-events-none" />
 
@@ -919,7 +984,7 @@ function Transformation() {
   ];
 
   return (
-    <section className="relative bg-[#050505] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+    <section className="relative bg-transparent py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden z-10">
       {/* Background ambient lighting */}
       <div className="absolute top-[40%] left-[-10%] w-[35vw] h-[35vw] bg-[#2D4A77]/4 rounded-full filter blur-[140px] pointer-events-none" />
 
@@ -978,7 +1043,7 @@ function Legacy() {
   };
 
   return (
-    <section id="legacy" className="relative bg-gradient-to-b from-[#0A0A0A] to-[#050505] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+    <section id="legacy" className="relative bg-transparent py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden z-10">
       {/* Background lighting */}
       <div className="absolute top-[30%] right-[-10%] w-[35vw] h-[35vw] bg-[#85bde2]/3 rounded-full filter blur-[140px] pointer-events-none" />
 
@@ -1111,7 +1176,7 @@ function Board() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   return (
-    <section id="board" className="relative bg-[#050505] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+    <section id="board" className="relative bg-transparent py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden z-10">
       {/* Background ambient lighting */}
       <div className="absolute top-[20%] right-[-10%] w-[45vw] h-[45vw] bg-[#85bde2]/3 rounded-full filter blur-[150px] pointer-events-none" />
       <div className="absolute bottom-[10%] left-[-10%] w-[35vw] h-[35vw] bg-[#2D4A77]/4 rounded-full filter blur-[130px] pointer-events-none" />
@@ -1271,7 +1336,7 @@ function Speakers() {
   ];
 
   return (
-    <section className="relative bg-gradient-to-b from-[#0A0A0A] to-[#050505] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+    <section className="relative bg-transparent py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden z-10">
       {/* Background ambient lighting */}
       <div className="absolute bottom-[20%] left-[-10%] w-[35vw] h-[35vw] bg-[#85bde2]/3 rounded-full filter blur-[130px] pointer-events-none" />
 
@@ -1322,7 +1387,7 @@ function Network() {
   ];
 
   return (
-    <section id="network" className="relative bg-[#050505] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+    <section id="network" className="relative bg-transparent py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden z-10">
       {/* Background ambient lighting */}
       <div className="absolute top-[20%] right-[-10%] w-[35vw] h-[35vw] bg-[#2D4A77]/4 rounded-full filter blur-[140px] pointer-events-none" />
 
@@ -1372,7 +1437,7 @@ function Recruitment({ onApply }: { onApply: () => void }) {
   ];
 
   return (
-    <section id="join" className="relative bg-gradient-to-b from-[#050505] to-[#0A0A0A] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+    <section id="join" className="relative bg-transparent py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden z-10">
       {/* Background ambient lighting */}
       <div className="absolute top-[20%] right-[-10%] w-[40vw] h-[40vw] bg-[#85bde2]/3 rounded-full filter blur-[150px] pointer-events-none" />
 
@@ -1433,7 +1498,7 @@ function Recruitment({ onApply }: { onApply: () => void }) {
 function Sponsors() {
   const sponsors = ["Ogilvy", "Wavemaker", "GroupM", "Dentsu", "Madison", "Publicis", "Grey", "BBDO", "Leo Burnett", "DDB Mudra"];
   return (
-    <section className="bg-[#050505] py-20 border-t border-white/[0.06]">
+    <section className="bg-transparent py-20 border-t border-white/[0.06] z-10 relative">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex items-center gap-3 mb-10">
           <div className="h-[1px] w-8 bg-[#85bde2]" />
@@ -1528,7 +1593,7 @@ function Gallery() {
   const filteredItems = filter === "all" ? galleryItems : galleryItems.filter(item => item.cat === filter);
 
   return (
-    <section id="gallery" className="relative bg-gradient-to-b from-[#050505] to-[#0A0A0A] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
+    <section id="gallery" className="relative bg-transparent py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden z-10">
       {/* Background ambient lighting */}
       <div className="absolute top-[20%] left-[-10%] w-[35vw] h-[35vw] bg-[#85bde2]/3 rounded-full filter blur-[130px] pointer-events-none" />
 
@@ -1964,6 +2029,91 @@ function MarketingMelaModal({ open, onClose }: { open: boolean; onClose: () => v
   );
 }
 
+// ─── WhatsApp FAB ─────────────────────────────────────────────────────────────
+function WhatsAppFAB() {
+  const [open, setOpen] = useState(false);
+  const WA_NUMBER = "919971306762";
+  const WA_MESSAGE = encodeURIComponent(
+    "Hi! I want to talk/connect with PROMINENT marketing club."
+  );
+  const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`;
+
+  return (
+    <>
+      {/* Popup card */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.88, y: 12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.88, y: 12 }}
+            transition={{ type: "spring", stiffness: 340, damping: 28 }}
+            className="fixed bottom-[88px] right-5 z-50 w-[300px] bg-[#1C1C1E]/95 backdrop-blur-2xl border border-white/10 rounded-[28px] shadow-[0_24px_70px_rgba(0,0,0,0.85)] overflow-hidden"
+          >
+            {/* Header */}
+            <div className="bg-[#25D366]/10 border-b border-white/[0.06] p-5 flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-[#25D366]/20 flex items-center justify-center ring-1 ring-[#25D366]/30 flex-shrink-0">
+                <MessageCircle size={22} className="text-[#25D366]" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-black text-white">Talk to PROMINENT</p>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#25D366] flex-shrink-0 animate-pulse" />
+                  <p className="text-[10px] text-[#A1A1AA] truncate">Usually replies within minutes</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setOpen(false)}
+                className="p-1.5 rounded-full hover:bg-white/10 transition-colors flex-shrink-0"
+              >
+                <X size={14} className="text-[#717182]" />
+              </button>
+            </div>
+            {/* Body */}
+            <div className="p-5">
+              {/* Preview message bubble */}
+              <div className="bg-[#2C2C2E] rounded-[18px] rounded-bl-[4px] p-4 mb-4 border border-white/5">
+                <p className="text-xs text-[#EBEBF5]/80 leading-relaxed">
+                  👋 Hi! I want to talk/connect with <span className="text-white font-bold">PROMINENT</span> marketing club.
+                </p>
+                <p className="text-[9px] text-[#717182] mt-2 text-right">Default message</p>
+              </div>
+              <a
+                href={WA_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2.5 w-full py-4 bg-[#25D366] hover:bg-[#21c05c] rounded-[18px] text-white text-sm font-black tracking-wide transition-all duration-200 shadow-[0_6px_20px_rgba(37,211,102,0.35)] hover:shadow-[0_8px_25px_rgba(37,211,102,0.5)] active:scale-[0.98]"
+              >
+                <svg viewBox="0 0 24 24" className="w-4.5 h-4.5 fill-white flex-shrink-0">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                Chat on WhatsApp
+              </a>
+              <p className="text-[9px] text-center text-[#717182] mt-3 tracking-wider">PROMINENT · NDIM</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* FAB Button with Call Logo */}
+      <motion.button
+        onClick={() => setOpen(!open)}
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 1.6, type: "spring", stiffness: 260, damping: 22 }}
+        whileTap={{ scale: 0.92 }}
+        whileHover={{ scale: 1.12 }}
+        className="fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full bg-[#25D366] shadow-[0_4px_24px_rgba(37,211,102,0.55)] flex items-center justify-center transition-colors duration-200 hover:bg-[#21c05c]"
+        aria-label="Chat with PROMINENT on WhatsApp"
+      >
+        <Phone size={22} className="text-white relative z-10" />
+        {/* Pulse ring */}
+        <span className="absolute inset-0 rounded-full animate-ping bg-[#25D366] opacity-25 pointer-events-none" />
+      </motion.button>
+    </>
+  );
+}
+
 // ─── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
   const [splashDone, setSplashDone] = useState(false);
@@ -1980,7 +2130,22 @@ export default function App() {
   const handleApply = () => setShowApplyModal(true);
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white" style={{ fontFamily: "Inter,sans-serif" }}>
+    <div className="min-h-screen bg-[#050505] text-white relative" style={{ fontFamily: "Inter,sans-serif" }}>
+      {splashDone && (
+        <div className="fixed inset-0 z-[-1] pointer-events-none opacity-30">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover"
+            src="/stock-video.mp4"
+          />
+          {/* Subtle overlay to preserve high legibility of all content */}
+          <div className="absolute inset-0 bg-[#050505]/75" />
+        </div>
+      )}
+
       <AnimatePresence>
         {!splashDone && <SplashScreen onDone={() => setSplashDone(true)} />}
       </AnimatePresence>
@@ -2021,6 +2186,8 @@ export default function App() {
             </span>
             <ArrowRight size={10} className="text-[#85bde2] group-hover:translate-x-0.5 transition-transform" />
           </motion.div>
+
+          <WhatsAppFAB />
 
           {/* Modal popup forms */}
           <ApplyModal open={showApplyModal} onClose={() => setShowApplyModal(false)} />
