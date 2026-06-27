@@ -1687,14 +1687,14 @@ function ApplyModal({ open, onClose }: { open: boolean; onClose: () => void }) {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto"
+          className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
-            className="relative w-full max-w-xl bg-[#0D0D0D] border border-white/[0.08] p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.85)] overflow-hidden rounded-sm"
+            className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto bg-[#0D0D0D] border border-white/[0.08] p-5 sm:p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.85)] rounded-sm"
             initial={{ scale: 0.94, y: 10, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
             exit={{ scale: 0.94, y: 10, opacity: 0 }}
@@ -1704,14 +1704,14 @@ function ApplyModal({ open, onClose }: { open: boolean; onClose: () => void }) {
             {/* Background pattern */}
             <div className="absolute top-0 right-0 w-24 h-24 bg-[#85bde2]/5 rounded-full filter blur-2xl pointer-events-none" />
             <button
-              className="absolute top-4 right-4 text-white/50 hover:text-white cursor-pointer p-1"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 text-white/50 hover:text-white cursor-pointer p-2 rounded-full hover:bg-white/10 transition-colors"
               onClick={onClose}
             >
               <X size={18} />
             </button>
 
             {!success ? (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-5">
                 <div>
                   <h3 className="text-xl font-black text-white tracking-tight mb-1.5 uppercase">Apply for PROMINENT</h3>
                   <p className="text-xs text-[#A1A1AA] leading-relaxed">
@@ -1801,14 +1801,14 @@ function ApplyModal({ open, onClose }: { open: boolean; onClose: () => void }) {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-4 mt-2 bg-[#85bde2] text-[#050505] text-xs font-bold tracking-[0.2em] uppercase hover:bg-white transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(133,189,226,0.15)] disabled:opacity-50"
+                  className="w-full py-3.5 sm:py-4 mt-1 sm:mt-2 bg-[#85bde2] text-[#050505] text-xs font-bold tracking-[0.2em] uppercase hover:bg-white transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(133,189,226,0.15)] disabled:opacity-50"
                 >
                   {loading ? "Submitting Application..." : "Submit Application"}
                   {!loading && <ArrowRight size={12} />}
                 </button>
               </form>
             ) : (
-              <div className="text-center py-10 flex flex-col items-center gap-5">
+              <div className="text-center py-6 sm:py-10 flex flex-col items-center gap-4 sm:gap-5">
                 <div className="w-16 h-16 rounded-full bg-[#85bde2]/10 border border-[#85bde2]/30 flex items-center justify-center mb-2">
                   <Award size={28} className="text-[#85bde2] animate-bounce" />
                 </div>
