@@ -8,11 +8,26 @@ import image1 from "@/imports/image_1.jpeg";
 import image2 from "@/imports/image_2.jpeg";
 import image3 from "@/imports/image_3.jpeg";
 import image4 from "@/imports/image_4.jpeg";
+// ─── Board Member Portrait Imports ───────────────────────────────────────────
+import imgPresident from "@/imports/President.png";
+import imgVicePresident from "@/imports/Vice President.png";
+import imgSecretary from "@/imports/Secretary.png";
+import imgJointSecretary from "@/imports/Joint Secretary.png";
+import imgEventHead from "@/imports/Event Head.png";
+import imgSocialMediaHead from "@/imports/Social Media HEad.png";
+import imgStudentCoordHead from "@/imports/Student Coordinator Head.png";
+import imgDocHead from "@/imports/Documentation Head.png";
+import imgDocHeadd from "@/imports/Documentation Headd.png";
 import {
   ChevronDown, ArrowRight, Menu, X, Award, Users, Calendar,
   TrendingUp, MapPin, Linkedin, Instagram, Twitter, Mail,
   ChevronLeft, ChevronRight, Play, Quote,
 } from "lucide-react";
+import presidentImg from "@/imports/President.png";
+import vicePresidentImg from "@/imports/Vice President.png";
+import jointSecretaryImg from "@/imports/Joint Secretary.png";
+import secretaryImg from "@/imports/Secretary.png";
+import studentCoordinatorImg from "@/imports/Student Coordinator Head.png";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const SILVER = "#d4e6f4"; // Silver-blue from logo
@@ -49,7 +64,7 @@ const EVENT_SLIDES = [
     img: image0,
     title: "PROMINENT × IIM Indore",
     tag: "Collaboration · 2024",
-    desc: "Joint workshop series — the first inter-institutional marketing summit of its kind.",
+    desc: "Joint workshop series — the first inter-collegiate marketing summit of its kind.",
   },
   {
     img: image1,
@@ -178,21 +193,21 @@ function Nav({ scrolled, onApply }: { scrolled: boolean; onApply: () => void }) 
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
+      className={`fixed top-4 left-6 right-6 z-40 transition-all duration-500 rounded-full border border-white/[0.08] ${
         scrolled
-          ? "bg-[#050505]/90 backdrop-blur-xl border-b border-white/[0.07] shadow-[0_1px_40px_rgba(0,0,0,0.6)]"
-          : ""
+          ? "bg-[#050505]/75 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.8)]"
+          : "bg-black/20 backdrop-blur-md"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 h-[68px] flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 h-[58px] flex items-center justify-between">
         <button
           onClick={() => scrollTo("hero")}
-          className="flex items-center gap-3 group"
+          className="flex items-center gap-2.5 group"
         >
-            <div className="w-8 h-8 rounded-full overflow-hidden ring-1 ring-white/20 group-hover:ring-white/40 transition-all">
+          <div className="w-7 h-7 rounded-full overflow-hidden ring-1 ring-white/10 group-hover:ring-white/30 transition-all">
             <ImageWithFallback src={prominentLogo} alt="PROMINENT" className="w-full h-full object-cover" />
           </div>
-          <span className="text-[11px] font-bold tracking-[0.22em] text-white uppercase">Prominent</span>
+          <span className="text-[10px] font-black tracking-[0.25em] text-white uppercase">Prominent</span>
         </button>
 
         <nav className="hidden md:flex items-center gap-7">
@@ -200,30 +215,24 @@ function Nav({ scrolled, onApply }: { scrolled: boolean; onApply: () => void }) 
             <button
               key={id}
               onClick={() => scrollTo(id)}
-              className={`text-[10px] tracking-[0.18em] uppercase transition-colors relative pb-0.5 ${
-                active === id ? "text-white" : "text-[#A1A1AA] hover:text-white"
+              className={`text-[9px] tracking-[0.2em] font-bold uppercase transition-colors relative pb-0.5 ${
+                active === id ? "text-[#85bde2]" : "text-[#A1A1AA] hover:text-white"
               }`}
             >
               {label}
-              {active === id && (
-                <motion.span
-                  layoutId="nav-indicator"
-                  className="absolute -bottom-0.5 left-0 right-0 h-[1px] bg-[#d4e6f4]"
-                />
-              )}
             </button>
           ))}
         </nav>
 
         <button
           onClick={onApply}
-          className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 text-[10px] tracking-[0.18em] uppercase font-semibold border border-[#85bde2]/35 text-[#85bde2] hover:bg-[#85bde2] hover:text-[#050505] hover:shadow-[0_0_20px_rgba(133,189,226,0.25)] transition-all duration-200 cursor-pointer"
+          className="hidden md:inline-flex items-center gap-1.5 px-4.5 py-2 text-[9px] tracking-[0.2em] uppercase font-black rounded-full bg-white/10 hover:bg-white text-white hover:text-[#050505] border border-white/20 transition-all duration-200 cursor-pointer"
         >
-          Apply Now <ArrowRight size={11} />
+          Apply Now <ArrowRight size={10} />
         </button>
 
         <button className="md:hidden text-white p-1" onClick={() => setOpen(!open)}>
-          {open ? <X size={20} /> : <Menu size={20} />}
+          {open ? <X size={18} /> : <Menu size={18} />}
         </button>
       </div>
 
@@ -357,7 +366,7 @@ function Hero({ onApply }: { onApply: () => void }) {
           >
             <div className="h-[1.5px] w-8 bg-[#85bde2]" />
             <span className="text-[10px] tracking-[0.35em] text-[#85bde2] uppercase font-bold">
-              The Professional Marketing Institution
+              The Premier Marketing Club
             </span>
           </motion.div>
 
@@ -410,14 +419,14 @@ function Hero({ onApply }: { onApply: () => void }) {
           >
             <button
               onClick={onApply}
-              className="group flex items-center gap-2.5 px-7 py-3.5 bg-[#d4e6f4] text-[#050505] text-[11px] font-bold tracking-[0.18em] uppercase hover:bg-white transition-all duration-200 shadow-[0_0_30px_rgba(133,189,226,0.15)] hover:shadow-[0_0_40px_rgba(133,189,226,0.25)] cursor-pointer"
+              className="group flex items-center gap-2.5 px-7 py-3.5 bg-white text-black text-[11px] font-black tracking-[0.18em] uppercase rounded-full hover:bg-[#85bde2] transition-all duration-200 shadow-[0_4px_16px_rgba(255,255,255,0.15)] cursor-pointer"
             >
               Apply Now
               <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
             </button>
             <button
               onClick={() => scrollTo("events")}
-              className="flex items-center gap-2.5 px-7 py-3.5 border border-[#d4e6f4]/30 bg-black/25 backdrop-blur-sm text-[#d4e6f4] text-[11px] font-bold tracking-[0.18em] uppercase hover:border-[#d4e6f4] hover:bg-white/10 transition-all duration-200 cursor-pointer"
+              className="flex items-center gap-2.5 px-7 py-3.5 border border-white/20 bg-white/10 backdrop-blur-md text-white text-[11px] font-black tracking-[0.18em] uppercase rounded-full hover:bg-white/20 hover:border-white/40 transition-all duration-200 cursor-pointer"
             >
               Explore Events
             </button>
@@ -509,17 +518,17 @@ function StatsStrip() {
     { value: 5000, suffix: "+", label: "Students Impacted" },
   ];
   return (
-    <div className="bg-[#0A0A0A] border-y border-white/[0.06]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-2 lg:grid-cols-4">
+    <div className="relative max-w-7xl mx-auto px-6 lg:px-12 -mt-16 z-30">
+      <div className="bg-[#1C1C1E]/75 backdrop-blur-xl border border-white/[0.08] shadow-[0_15px_45px_rgba(0,0,0,0.5)] rounded-[24px] grid grid-cols-2 lg:grid-cols-4 overflow-hidden">
         {stats.map((s, i) => (
           <div
             key={s.label}
-            className={`py-10 px-6 flex flex-col gap-1 ${i < stats.length - 1 ? "border-r border-white/[0.06]" : ""}`}
+            className={`py-8 px-6 flex flex-col gap-1.5 justify-center text-center ${i < stats.length - 1 ? "lg:border-r border-white/[0.06]" : ""}`}
           >
             <span className="text-4xl font-black text-white tracking-tight">
               <Counter target={s.value} suffix={s.suffix} />
             </span>
-            <span className="text-[10px] text-[#A1A1AA] tracking-[0.2em] uppercase">{s.label}</span>
+            <span className="text-[9px] text-[#85bde2] tracking-[0.2em] uppercase font-bold">{s.label}</span>
           </div>
         ))}
       </div>
@@ -553,6 +562,27 @@ function SectionHead({ eyebrow, title, sub }: { eyebrow: string; title: React.Re
 
 // ─── About ────────────────────────────────────────────────────────────────────
 function About() {
+  const coreTeam = [
+    { name: "Dev N Suman", role: "President", img: imgPresident },
+    { name: "Sunidhi Sharma", role: "Vice President", img: imgVicePresident },
+    { name: "Aditya Kun", role: "Secretary", img: imgSecretary },
+    { name: "Ishita Singh", role: "Joint Secretary", img: imgJointSecretary },
+    { name: "Rishika Singh", role: "Event Head", img: imgEventHead },
+    { name: "Daksh Mohandru", role: "Social Media Head", img: imgSocialMediaHead },
+    { name: "Priyal Maan Shrestha", role: "Student Coordinator Head", img: imgStudentCoordHead },
+    { name: "Abhay Singh", role: "Documentation Head", img: imgDocHead },
+    { name: "Bhavya Arora", role: "Documentation Head", img: imgDocHeadd },
+  ];
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % coreTeam.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [coreTeam.length]);
+
   return (
     <section id="about" className="relative bg-[#050505] py-28 lg:py-36 overflow-hidden">
       {/* Background ambient lighting */}
@@ -563,18 +593,18 @@ function About() {
         <div>
           <SectionHead
             eyebrow="About PROMINENT"
-            title={<>The Institution<br />Behind the Brand</>}
-            sub="PROMINENT is not a student club. It is a professional development institution operating within academia — with the rigour, output, and standards of the industry it trains for."
+            title={<>The Marketing Club<br />of Our College</>}
+            sub="PROMINENT is the premier marketing club of our college. We are a community of creative minds, brand strategists, and storytellers passionate about learning, creating, and executing impact-driven campaigns."
           />
           <div className="grid grid-cols-2 gap-4 mt-10">
             {[
-              { icon: Award, t: "Nationally Recognised", d: "Competed and won at premier B-school platforms" },
-              { icon: Users, t: "84 Active Members", d: "Selective intake. High-performance culture." },
-              { icon: TrendingUp, t: "₹2L+ Sponsorships", d: "Commercially self-sustaining since Year 2" },
-              { icon: Calendar, t: "Est. 2021", d: "Five years of institution building" },
+              { icon: Award, t: "Nationally Recognised", d: "Competed and won at premier inter-collegiate platforms" },
+              { icon: Users, t: "84 Active Members", d: "A passionate student community with a high-performance culture." },
+              { icon: TrendingUp, t: "₹2L+ Sponsorships", d: "Commercially self-sustaining marketing activities" },
+              { icon: Calendar, t: "Est. 2021", d: "Five years of student leadership and creativity" },
             ].map(({ icon: Icon, t, d }) => (
-              <div key={t} className="bg-[#0D0D0D]/50 border border-white/[0.05] rounded-sm p-6 group hover:border-[#85bde2]/20 hover:bg-[#0D0D0D] transition-all duration-300 hover:shadow-[0_10px_25px_rgba(133,189,226,0.03)]">
-                <div className="p-2.5 bg-[#85bde2]/5 rounded-sm w-fit group-hover:bg-[#85bde2]/10 transition-all duration-300 mb-4">
+              <div key={t} className="bg-[#1C1C1E]/40 border border-white/[0.06] backdrop-blur-md rounded-[20px] p-6 group hover:border-[#85bde2]/30 hover:bg-[#1C1C1E]/70 transition-all duration-300 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)]">
+                <div className="p-2.5 bg-[#85bde2]/5 rounded-xl w-fit group-hover:bg-[#85bde2]/15 transition-all duration-300 mb-4 border border-white/5">
                   <Icon size={17} className="text-[#85bde2]" />
                 </div>
                 <p className="text-sm font-bold text-white mb-1">{t}</p>
@@ -584,19 +614,50 @@ function About() {
           </div>
         </div>
 
-        <div className="relative hidden lg:block">
-          <div className="aspect-[3/4] max-w-sm ml-auto overflow-hidden ring-1 ring-white/10 rounded-sm shadow-[0_20px_50px_rgba(0,0,0,0.7)]">
-            <img
-              src={image2}
-              alt="Dev N Suman - President"
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/80 via-transparent to-transparent" />
-          </div>
-          <div className="absolute -bottom-5 -left-5 border border-white/[0.08] bg-[#0D0D0D]/95 backdrop-blur-md p-6 rounded-sm shadow-[0_15px_35px_rgba(0,0,0,0.6)] hover:border-[#85bde2]/30 transition-all duration-300 max-w-[240px]">
-            <p className="text-[9px] text-[#A1A1AA] tracking-[0.25em] uppercase mb-1.5 font-bold">Current Leadership</p>
-            <p className="text-base font-black text-white tracking-tight uppercase">Dev N Suman</p>
-            <p className="text-xs text-[#85bde2] font-semibold mt-0.5">President, AY 2026–27</p>
+        {/* Right Side: Core Team Slider */}
+        <div className="relative w-full max-w-sm ml-auto">
+          <div className="aspect-[3/4] w-full overflow-hidden ring-1 ring-white/10 rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.8)] relative bg-[#0D0D0D]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.02 }}
+                transition={{ duration: 0.6 }}
+                className="absolute inset-0 w-full h-full"
+              >
+                <ImageWithFallback
+                  src={coreTeam[activeIndex].img}
+                  alt={coreTeam[activeIndex].name}
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            </AnimatePresence>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25 pointer-events-none" />
+            
+            {/* iOS Floating Frosted Capsule Details */}
+            <div className="absolute bottom-4 left-4 right-4 p-4 z-10 bg-[#1C1C1E]/75 backdrop-blur-md border border-white/10 rounded-[18px] shadow-lg">
+              <p className="text-[8px] text-[#85bde2] tracking-[0.25em] uppercase mb-0.5 font-black">Core Board Member</p>
+              <h3 className="text-base font-black text-white tracking-tight uppercase">
+                {coreTeam[activeIndex].name}
+              </h3>
+              <p className="text-[10px] text-[#A1A1AA] font-semibold mt-0.5">
+                {coreTeam[activeIndex].role}
+              </p>
+            </div>
+
+            {/* Slider Dots */}
+            <div className="absolute top-4 right-4 flex gap-1 z-25 bg-[#1C1C1E]/80 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/10 shadow-md">
+              {coreTeam.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveIndex(idx)}
+                  className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                    idx === activeIndex ? "bg-[#85bde2] w-3" : "bg-white/20 hover:bg-white/40"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -714,7 +775,7 @@ function Excellence() {
       <div className="absolute bottom-[20%] right-[-15%] w-[40vw] h-[40vw] bg-[#85bde2]/3 rounded-full filter blur-[130px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12" ref={ref}>
-        <SectionHead eyebrow="Proof of Excellence" title={<>Results That<br />Speak Institutionally.</>} />
+        <SectionHead eyebrow="Proof of Excellence" title={<>Results That<br />Define our Legacy.</>} />
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {achievements.map((a, i) => (
@@ -911,7 +972,7 @@ function Legacy() {
     2021: { event: "PROMINENT Launch — Founding Chapter", win: "Collegiate Brand Summit — 2nd Place", president: "Arjun Sharma", desc: "The year it all began. Founded with 18 members, a bold vision, and zero precedent." },
     2022: { event: "Marketing Masterclass Series (8 sessions)", win: "National Admania — 1st Place", president: "Isha Gupta", desc: "First major competition win. Proven we could compete at the national level." },
     2023: { event: "Annual Marketing Summit v1 — 600+ attendees", win: "B-School Marketing League — Champions", president: "Rahul Nair", desc: "The flagship event launched. 600 attendees. 8 industry speakers. Zero compromise." },
-    2024: { event: "PROMINENT × IIM Indore Joint Workshop", win: "National Case Competition — Gold", president: "Priya Verma", desc: "Crossed institutional boundaries. Partnered with India's premier management institutes." },
+    2024: { event: "PROMINENT × IIM Indore Joint Workshop", win: "National Case Competition — Gold", president: "Priya Verma", desc: "Expanded our horizons. Partnered with India's premier management institutes." },
     2025: { event: "Industry Connect Series — 12 CXO Sessions", win: "Marketing Innovation Award — Runner-Up", president: "Dev N Suman", desc: "84 members. 12 CXO sessions. The most operationally intensive year in PROMINENT history." },
     2026: { event: "Digital Marketing Conclave (ongoing)", win: "—", president: "Dev N Suman", desc: "Dev N Suman takes office. Re-imagining digital boundaries, launching new brand incubators, and expanding corporate partnerships." },
   };
@@ -922,7 +983,7 @@ function Legacy() {
       <div className="absolute top-[30%] right-[-10%] w-[35vw] h-[35vw] bg-[#85bde2]/3 rounded-full filter blur-[140px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
-        <SectionHead eyebrow="Legacy" title={<>Five Years of<br />Institution Building.</>} />
+        <SectionHead eyebrow="Legacy" title={<>Five Years of<br />Club Excellence.</>} />
 
         {/* Year selector */}
         <div className="flex gap-2 mb-10 overflow-x-auto pb-2 scrollbar-hide">
@@ -977,19 +1038,77 @@ function Legacy() {
 }
 
 // ─── Board ────────────────────────────────────────────────────────────────────
+const LEADERSHIP_CORE = [
+  {
+    role: "President",
+    name: "Dev N Suman",
+    dept: "Executive Leadership",
+    image: imgPresident,
+    quote: "Leading with vision. Inspiring with action. Building a legacy of impact and excellence.",
+  },
+  {
+    role: "Vice President",
+    name: "Sunidhi Sharma",
+    dept: "Operations & Strategy",
+    image: imgVicePresident,
+    quote: "Empowering ideas. Elevating perspectives. Leading with purpose, driving impact.",
+  },
+];
+
+const DIRECTORS_CORE = [
+  {
+    role: "Secretary",
+    name: "Aditya Kun",
+    dept: "Administration",
+    image: imgSecretary,
+    quote: "Leading with vision. Inspiring with action. Building a legacy of impact and excellence.",
+  },
+  {
+    role: "Joint Secretary",
+    name: "Ishita Singh",
+    dept: "External Relations",
+    image: imgJointSecretary,
+    quote: "Turning ideas into unforgettable experiences. Where creativity meets perfect execution.",
+  },
+  {
+    role: "Event Head",
+    name: "Rishika Singh",
+    dept: "Events & Operations",
+    image: imgEventHead,
+    quote: "Turning ideas into unforgettable experiences. Where creativity meets perfect execution.",
+  },
+  {
+    role: "Social Media Head",
+    name: "Daksh Mohandru",
+    dept: "Digital & Outreach",
+    image: imgSocialMediaHead,
+    quote: "Crafting connections. Building community. Amplifying our voice, one post at a time.",
+  },
+  {
+    role: "Student Coordinator Head",
+    name: "Priyal Maan Shrestha",
+    dept: "Cohort Management",
+    image: imgStudentCoordHead,
+    quote: "Uniting voices. Inspiring action. Leading with passion, building with purpose.",
+  },
+  {
+    role: "Documentation Head",
+    name: "Abhay Singh",
+    dept: "Documentation & Editorial",
+    image: imgDocHead,
+    quote: "Capturing today. Preserving tomorrow. Creating clarity, driving excellence.",
+  },
+  {
+    role: "Documentation Head",
+    name: "Bhavya Arora",
+    dept: "Documentation & Editorial",
+    image: imgDocHeadd,
+    quote: "Turning moments into records. Organizing today, preserving tomorrow. Building clarity through documentation.",
+  },
+];
+
 function Board() {
-  const leadership = [
-    { role: "President", name: "Dev N Suman", dept: "Executive Leadership" },
-    { role: "Vice President", name: "Sunidhi Sharma", dept: "Operations & Strategy" },
-  ];
-  const directors = [
-    { role: "Director — Events", name: "Sneha Pillai" },
-    { role: "Director — Marketing", name: "Aryan Shah" },
-    { role: "Director — Strategy", name: "Nisha Iyer" },
-    { role: "Director — Outreach", name: "Rohan Das" },
-    { role: "Director — Content", name: "Meera Joshi" },
-    { role: "Director — Design", name: "Kiran Rao" },
-  ];
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   return (
     <section id="board" className="relative bg-[#050505] py-28 lg:py-36 border-t border-white/[0.06] overflow-hidden">
@@ -1006,7 +1125,7 @@ function Board() {
 
         {/* Widescreen Team/Cohort Banner */}
         <motion.div
-          className="mb-10 relative group overflow-hidden border border-white/[0.08] bg-[#0A0A0A] shadow-[0_15px_45px_rgba(0,0,0,0.85)] rounded-sm"
+          className="mb-12 relative group overflow-hidden border border-white/[0.08] bg-[#0A0A0A] shadow-[0_15px_45px_rgba(0,0,0,0.85)] rounded-sm"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
@@ -1018,11 +1137,9 @@ function Board() {
               alt="PROMINENT Team 2026–27"
               className="w-full h-full object-cover object-[center_35%] group-hover:scale-[1.02] transition-transform duration-[1200ms] ease-out"
             />
-            {/* Dark gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/45 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/80 via-[#050505]/20 to-transparent" />
           </div>
-          
           <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 flex flex-col md:flex-row md:items-end justify-between gap-6 z-10">
             <div className="max-w-xl">
               <div className="flex items-center gap-2 mb-2.5">
@@ -1033,63 +1150,107 @@ function Board() {
                 PROMINENT Team 2026–27
               </h3>
               <p className="text-xs md:text-sm text-[#A1A1AA] leading-relaxed font-light">
-                84 driven members representing a culture of rigor, collaboration, and high performance — trained for corporate readiness and marketing leadership.
+                84 driven members representing a culture of rigor, collaboration, and high performance.
               </p>
             </div>
             <div className="flex items-center gap-3 shrink-0">
-              <span className="text-[10px] tracking-[0.2em] uppercase text-[#717182] border border-white/10 px-4 py-2 bg-white/[0.02] backdrop-blur-sm">
-                Estd. 2021
-              </span>
-              <span className="text-[10px] tracking-[0.2em] uppercase text-[#85bde2] border border-[#85bde2]/30 px-4 py-2 bg-[#85bde2]/5 font-bold backdrop-blur-sm">
-                Batch 2026–27
-              </span>
+              <span className="text-[10px] tracking-[0.2em] uppercase text-[#717182] border border-white/10 px-4 py-2 bg-white/[0.02] backdrop-blur-sm">Estd. 2021</span>
+              <span className="text-[10px] tracking-[0.2em] uppercase text-[#85bde2] border border-[#85bde2]/30 px-4 py-2 bg-[#85bde2]/5 font-bold backdrop-blur-sm">Batch 2026–27</span>
             </div>
           </div>
         </motion.div>
 
-        {/* Top 2 leadership */}
-        <div className="grid md:grid-cols-2 gap-6 mb-6">
-          {leadership.map((l, i) => (
+        {/* ── TIER 1: President & Vice President ── large portrait cards */}
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          {LEADERSHIP_CORE.map((l, i) => (
             <motion.div
               key={l.name}
-              className="bg-[#0D0D0D]/60 p-10 flex items-center gap-6 group hover:bg-[#0D0D0D] border border-white/[0.06] hover:border-[#85bde2]/30 hover:shadow-[0_15px_35px_rgba(133,189,226,0.06)] rounded-sm transition-all duration-500"
-              initial={{ opacity: 0, y: 20 }}
+              className="group relative overflow-hidden rounded-sm border border-white/[0.07] hover:border-[#85bde2]/35 bg-[#0D0D0D]/60 hover:bg-[#0D0D0D] transition-all duration-500 hover:shadow-[0_20px_45px_rgba(133,189,226,0.07)] cursor-default"
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
+              transition={{ delay: i * 0.12, duration: 0.6, ease: [0.16,1,0.3,1] }}
               viewport={{ once: true }}
+              onMouseEnter={() => setHoveredCard(l.name)}
+              onMouseLeave={() => setHoveredCard(null)}
             >
-              <div className="w-16 h-16 bg-gradient-to-br from-[#1C1C1E] to-[#252528] border border-white/10 group-hover:border-[#85bde2]/30 group-hover:shadow-[0_0_15px_rgba(133,189,226,0.15)] flex items-center justify-center shrink-0 transition-all duration-300">
-                <span className="text-xl font-black text-white group-hover:text-[#85bde2] transition-colors">
-                  {l.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
-                </span>
+              {/* Portrait */}
+              <div className="aspect-[3/4] w-full overflow-hidden">
+                <ImageWithFallback
+                  src={l.image}
+                  alt={l.name}
+                  className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-700"
+                />
               </div>
-              <div>
-                <p className="text-[9px] tracking-[0.3em] text-[#85bde2] uppercase mb-1 font-bold">{l.role}</p>
-                <p className="text-lg font-black text-white uppercase tracking-wide">{l.name}</p>
-                <p className="text-xs text-[#717182] font-semibold mt-0.5">{l.dept}</p>
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/50 to-transparent" />
+              {/* Name / role badge */}
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <p className="text-[9px] tracking-[0.3em] text-[#85bde2] uppercase font-black mb-1.5">{l.role}</p>
+                <h3 className="text-2xl font-black text-white uppercase tracking-tight leading-none mb-1">{l.name}</h3>
+                <p className="text-xs text-[#A1A1AA] font-light mb-3">{l.dept}</p>
+                <AnimatePresence>
+                  {hoveredCard === l.name && (
+                    <motion.p
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 4 }}
+                      transition={{ duration: 0.25 }}
+                      className="text-xs text-[#d4e6f4]/80 italic leading-relaxed"
+                      style={{ fontFamily: "'Playfair Display',serif" }}
+                    >
+                      &ldquo;{l.quote}&rdquo;
+                    </motion.p>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Directors grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {directors.map((d, i) => (
+        {/* ── TIER 2: Core Directors — all 7 members with photos ── */}
+        <p className="text-[9px] tracking-[0.3em] text-[#85bde2] uppercase font-black mb-6 flex items-center gap-2">
+          <span className="h-[1px] w-6 bg-[#85bde2]" /> Core Directors
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+          {DIRECTORS_CORE.map((d, i) => (
             <motion.div
               key={d.name}
-              className="bg-[#0D0D0D]/40 p-7 hover:bg-[#0D0D0D]/85 border border-white/[0.05] hover:border-[#85bde2]/20 hover:shadow-[0_10px_25px_rgba(133,189,226,0.04)] group rounded-sm transition-all duration-500"
-              initial={{ opacity: 0, y: 16 }}
+              className="group relative overflow-hidden rounded-sm border border-white/[0.06] hover:border-[#85bde2]/30 bg-[#0D0D0D]/40 hover:bg-[#0D0D0D]/85 transition-all duration-500 hover:shadow-[0_12px_30px_rgba(133,189,226,0.05)] cursor-default"
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 + i * 0.07, duration: 0.45 }}
+              transition={{ delay: 0.05 + i * 0.07, duration: 0.5 }}
               viewport={{ once: true }}
+              onMouseEnter={() => setHoveredCard(d.name)}
+              onMouseLeave={() => setHoveredCard(null)}
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-[#1C1C1E] to-[#252528] border border-white/10 group-hover:border-[#85bde2]/35 flex items-center justify-center mb-5 transition-all duration-300">
-                <span className="text-xs font-bold text-[#717182] group-hover:text-[#85bde2] transition-colors">
-                  {d.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
-                </span>
+              {/* Portrait */}
+              <div className="aspect-[3/4] w-full overflow-hidden">
+                <ImageWithFallback
+                  src={d.image}
+                  alt={d.name}
+                  className="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-700"
+                />
               </div>
-              <p className="text-sm font-bold text-white mb-1 uppercase tracking-wide">{d.name}</p>
-              <p className="text-[10px] text-[#A1A1AA] font-semibold">{d.role}</p>
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent" />
+              {/* Name badge */}
+              <div className="absolute bottom-0 left-0 right-0 p-4">
+                <p className="text-[8px] tracking-[0.25em] text-[#85bde2] uppercase font-black mb-1">{d.role}</p>
+                <h4 className="text-sm font-black text-white uppercase tracking-wide leading-tight">{d.name}</h4>
+                <AnimatePresence>
+                  {hoveredCard === d.name && (
+                    <motion.p
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 4 }}
+                      transition={{ duration: 0.22 }}
+                      className="text-[10px] text-[#A1A1AA] font-light mt-1.5 leading-relaxed line-clamp-3"
+                    >
+                      {d.dept}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -1304,7 +1465,7 @@ function Footer() {
               <span className="text-[11px] font-black tracking-[0.22em] text-white uppercase">Prominent</span>
             </div>
             <p className="text-xs text-[#717182] leading-relaxed">
-              The Professional Marketing Institution. Building future marketing leaders since 2021.
+              The Premier College Marketing Club. Building future marketing leaders since 2021.
             </p>
           </div>
           <div>

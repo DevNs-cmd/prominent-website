@@ -1,4 +1,4 @@
-# PROMINENT — THE PROFESSIONAL MARKETING INSTITUTION
+# PROMINENT — THE PREMIER MARKETING CLUB
 
 ## ROLE
 
@@ -31,7 +31,7 @@ Growth
 
 Legacy
 
-Institutional Excellence
+Club Excellence
 
 Corporate Readiness
 
@@ -56,7 +56,7 @@ Career Progression
 
 Marketing Leadership
 
-Institution Building
+Club Legacy
 
 Professional Development
 
@@ -273,7 +273,7 @@ No floating random objects.
 
 Below Hero:
 
-Institutional credibility metrics.
+Club credibility metrics.
 
 25+
 
@@ -428,7 +428,7 @@ Visual Style:
 
 Museum timeline.
 
-Institution archive.
+Club archive.
 
 Historical significance.
 
@@ -600,7 +600,7 @@ Editorial layout.
 
 Premium white space.
 
-Institutional tone.
+Professional tone.
 
 ---
 
@@ -646,7 +646,7 @@ Responsibilities
 
 Visual style:
 
-Official institutional document.
+Official club document.
 
 ---
 
@@ -684,7 +684,7 @@ Socials.
 
 Copyright.
 
-Institutional credibility statement.
+Club credibility statement.
 
 ---
 
@@ -730,6 +730,6 @@ Responsive Constraints
 
 Developer Handoff Ready
 
-Every screen should feel like a premium institution rather than a student club.
+Every screen should feel like a premium club rather than a basic student society.
 
 The final design should be worthy of being showcased as one of the best student organization websites in India.
